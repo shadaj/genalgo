@@ -3,9 +3,18 @@ package me.shadaj.bio.sequences
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Builder
 import scala.collection.IndexedSeqLike
+import scala.collection.generic.CanBuildFrom
 
-class RNA(innerSequence: String) extends Sequence(innerSequence) with IndexedSeqLike[Base, RNA] {
-  override protected[this] def newBuilder: Builder[Base, RNA] = RNA.newBuilder
+import Base._
+
+class RNA private (innerStorage: Array[Int], val length: Int) extends Sequence[RNABase, RNA] {
+  import RNA._
+  override protected[this] def newBuilder: Builder[RNABase, RNA] = RNA.newBuilder
+  
+  def apply(index: Int): RNABase = {
+    if (index < 0 || index >= length) throw new IndexOutOfBoundsException
+    RNABase.fromInt(innerStorage(index / LengthPerInt) >> (index % LengthPerInt * BitsPerGroup) & Bitmask)
+  }
   
   def complement = {
     map { base =>
@@ -15,7 +24,7 @@ class RNA(innerSequence: String) extends Sequence(innerSequence) with IndexedSeq
         case G => C
         case C => G
       }
-    }.asRNA
+    }
   }
   
   def reverseComplement = {
@@ -24,10 +33,29 @@ class RNA(innerSequence: String) extends Sequence(innerSequence) with IndexedSeq
 }
 
 object RNA {
-  def fromSeq(seq: IndexedSeq[Base]) = {
-    val sequence: Sequence = seq
-    sequence.asRNA
+  def apply(str: String): RNA = {
+    fromSeq(str.map(RNABase.fromChar))
   }
   
-  def newBuilder: Builder[Base, RNA] = new ArrayBuffer mapResult fromSeq
+  def fromSeq(seq: IndexedSeq[RNABase]): RNA = {
+    val innerStorage = new Array[Int]((seq.length + Bitmask - 1) / Bitmask)
+    for (i <- 0 until seq.length) {
+      seq(i) match {
+        case b: RNABase => {
+          innerStorage(i / LengthPerInt) |= RNABase.toInt(b) << (i % Bitmask * BitsPerGroup)
+        }
+        case other => throw new IllegalArgumentException("Non-RNA BaseLike encountered: " + other)
+      }
+      
+    }
+    
+    new RNA(innerStorage, seq.length)
+  }
+  
+  def newBuilder: Builder[RNABase, RNA] = new ArrayBuffer mapResult fromSeq
+  
+  implicit def canBuildFrom = new CanBuildFrom[RNA, RNABase, RNA] {
+    def apply() = newBuilder
+    def apply(from: RNA) = newBuilder
+  }
 }

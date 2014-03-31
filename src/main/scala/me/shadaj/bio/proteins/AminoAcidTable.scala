@@ -1,6 +1,7 @@
 package me.shadaj.bio.proteins
 
 import scala.io.Source
+import me.shadaj.bio.sequences.RNA
 
 object AminoAcidTable {
   private val source = Source.fromInputStream(getClass().getResourceAsStream("/amino_acid_table.txt"))
@@ -17,14 +18,14 @@ object AminoAcidTable {
     mapSplit(0) -> mapSplit(1)
   }).toMap
   
-  def aminoAcid(codon: String) = {
+  def aminoAcid(codon: RNA) = {
     if (codon.length != 3) {
       throw new IllegalArgumentException("A codon's length must be 3")
     }
-    table(codon)
+    table(codon.mkString(""))
   }
   
-  def aminoChainForRna(sequence: String) = {
+  def aminoChainForRna(sequence: RNA) = {
     sequence.grouped(3).map(aminoAcid).toList
   }
   

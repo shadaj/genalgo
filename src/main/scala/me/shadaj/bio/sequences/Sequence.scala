@@ -3,30 +3,20 @@ package me.shadaj.bio.sequences
 import scala.collection.IndexedSeqLike
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Builder
+import me.shadaj.bio.alignment.AlignmentStrategy
+import me.shadaj.bio.scoring.ScoringMatrix
 
-class Sequence(innerSequence: String) extends IndexedSeq[Base] with IndexedSeqLike[Base, Sequence] {
-  override protected[this] def newBuilder: Builder[Base, Sequence] = Sequence.newBuilder
+trait Sequence[B <: BaseLike, C <: Sequence[B, _]] extends IndexedSeq[B] with IndexedSeqLike[B, C] {
   
-  def length = innerSequence.length
-  def apply(index: Int) = Base.fromChar(innerSequence(index))
-  
-  def gcContent: Double = {
-    val gcs = filter(c => c == G || c == C).length
-    (gcs.toDouble/sequence.length) * 100
+  override protected[this] def newBuilder: Builder[B, C] = ???
+    
+  def hammingDistance(that: C) = {
+    zip(that).count { case (a, b) => a != b}
   }
   
-  def hammingDistance(that: Sequence) = {
-    sequence.zip(that.sequence).count { case (a, b) => a != b}
-  }
+  def align(that: C, scorer: ScoringMatrix[B])(implicit strategy: AlignmentStrategy) = {
+    strategy.align(this, that, scorer)
+  } 
   
-  def asDNA = new DNA(innerSequence)
-  def asRNA = new RNA(innerSequence)
-  
-  private [sequences] def sequence = innerSequence
-  
-  override def toString = innerSequence
-}
-
-object Sequence {
-  def newBuilder: Builder[Base, Sequence] = new ArrayBuffer mapResult indexedSeqToSequence
+  override def toString = mkString
 }
