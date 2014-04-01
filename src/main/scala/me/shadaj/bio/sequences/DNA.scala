@@ -1,12 +1,12 @@
 package me.shadaj.bio.sequences
 
-import scala.collection.SeqLike
 import scala.collection.generic.CanBuildFrom
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Builder
-import scala.collection.IndexedSeqLike
 
-import Base._
+import Base.Bitmask
+import Base.BitsPerGroup
+import Base.LengthPerInt
 
 class DNA private (innerStorage: Array[Int], val length: Int) extends Sequence[DNABase, DNA] {
   import DNA._
