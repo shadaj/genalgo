@@ -1,20 +1,20 @@
 package me.shadaj.bio.proteins
 
 import scala.io.Source
+import me.shadaj.bio.sequences.AminoAcid
+import me.shadaj.bio.sequences.Protein
 
 object ProteinWeights {
   private val tableLines = Source.fromInputStream(
       ProteinWeights.getClass().getResourceAsStream("/protein_mass_table.txt")
   ).getLines
   
-  val table: Map[String, Int] = tableLines.map { s =>
+  private val table: Map[AminoAcid, Int] = tableLines.map { s =>
     val split = s.split(' ')
-    split(0) -> split(1).toInt
+    AminoAcid.fromChar(split(0).head) -> split(1).toInt
   }.toMap
   
-  val proteinTypes: List[String] = table.map(_._1).toList
+  def weightOf(acid: AminoAcid): Int = table(acid)
   
-  def weightOf(peptide: Char): Int = table(peptide.toString)
-  
-  def weightOf(peptide: String): Int = peptide.map(weightOf).sum
+  def weightOf(protein: Protein): Int = protein.map(weightOf).sum
 }

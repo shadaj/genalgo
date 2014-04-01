@@ -30,6 +30,17 @@ class RNA private (innerStorage: Array[Int], val length: Int) extends Sequence[R
   def reverseComplement = {
     reverse complement
   }
+  
+  def toDNA: DNA = {
+    DNA.fromSeq {
+      map {
+        _ match {
+          case U => T
+          case x: DNABase => x
+        }
+      }
+    }
+  }
 }
 
 object RNA {

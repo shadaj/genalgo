@@ -1,14 +1,14 @@
 package me.shadaj.bio.tests
 
+import scala.io.Source
+
 import org.scalatest.FunSuite
-import org.scalatest.FunSuite
+
 import me.shadaj.bio.alignment.GlobalAlignment
 import me.shadaj.bio.alignment.LocalAlignment
 import me.shadaj.bio.scoring.BLOSUM62
-import me.shadaj.bio.scoring.BLOSUM62
 import me.shadaj.bio.scoring.PAM250
-import me.shadaj.bio.sequences._
-import scala.io.Source
+import me.shadaj.bio.sequences.SequenceString
 
 class GlobalAlignmentTest extends FunSuite {
   implicit val strategy = GlobalAlignment

@@ -3,7 +3,7 @@ package me.shadaj.bio.sequences
 trait AminoAcid extends BaseLike
 
 object AminoAcid {
-  val acids = List(Phe, Leu, Ser, Tyr, Cys, Trp, Pro, His, Gln, Arg, Ile, Met, Thr, Asn, Lys, Val, Ala, Asp, Glu, Gly)
+  val acids = List(Phe, Leu, Ser, Tyr, Cys, Trp, Pro, His, Gln, Arg, Ile, Met, Thr, Asn, Lys, Val, Ala, Asp, Glu, Gly, Stop)
   val fromChar = acids.map(a => a.short -> a).toMap
 }
 
@@ -105,4 +105,9 @@ object Glu extends AminoAcid {
 object Gly extends AminoAcid {
   val short = 'G'
   val long = "Glycine"
+}
+
+object Stop extends AminoAcid {
+  val short = '*'
+  val long = "STOP"
 }
