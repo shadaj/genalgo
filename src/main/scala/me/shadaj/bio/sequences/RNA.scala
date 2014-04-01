@@ -4,19 +4,20 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Builder
 import scala.collection.IndexedSeqLike
 import scala.collection.generic.CanBuildFrom
-
 import Base._
+import me.shadaj.bio.util.BitStorage
+import me.shadaj.bio.codontable.CodonTable
 
-class RNA private (innerStorage: Array[Int], val length: Int) extends Sequence[RNABase, RNA] {
-  import RNA._
+class RNA private (storage: BitStorage, val length: Int) extends Sequence[RNABase, RNA] {
+  implicit def canBuildFrom = RNA.canBuildFrom
   override protected[this] def newBuilder: Builder[RNABase, RNA] = RNA.newBuilder
   
   def apply(index: Int): RNABase = {
     if (index < 0 || index >= length) throw new IndexOutOfBoundsException
-    RNABase.fromInt(innerStorage(index / LengthPerInt) >> (index % LengthPerInt * BitsPerGroup) & Bitmask)
+    storage(index, RNABase.fromInt)
   }
   
-  def complement = {
+  def complement: RNA = {
     map { base =>
       base match {
         case A => U
@@ -27,7 +28,7 @@ class RNA private (innerStorage: Array[Int], val length: Int) extends Sequence[R
     }
   }
   
-  def reverseComplement = {
+  def reverseComplement: RNA = {
     reverse complement
   }
   
@@ -41,6 +42,10 @@ class RNA private (innerStorage: Array[Int], val length: Int) extends Sequence[R
       }
     }
   }
+  
+  def toProtein(implicit codonTable: CodonTable): Protein = {
+    codonTable.proteinForRNA(this)
+  }
 }
 
 object RNA {
@@ -49,18 +54,7 @@ object RNA {
   }
   
   def fromSeq(seq: IndexedSeq[RNABase]): RNA = {
-    val innerStorage = new Array[Int]((seq.length + Bitmask - 1) / Bitmask)
-    for (i <- 0 until seq.length) {
-      seq(i) match {
-        case b: RNABase => {
-          innerStorage(i / LengthPerInt) |= RNABase.toInt(b) << (i % Bitmask * BitsPerGroup)
-        }
-        case other => throw new IllegalArgumentException("Non-RNA BaseLike encountered: " + other)
-      }
-      
-    }
-    
-    new RNA(innerStorage, seq.length)
+    new RNA(BitStorage(2, seq.toArray, RNABase.toInt), seq.length)
   }
   
   def newBuilder: Builder[RNABase, RNA] = new ArrayBuffer mapResult fromSeq

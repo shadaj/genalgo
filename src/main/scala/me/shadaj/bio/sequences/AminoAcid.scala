@@ -3,8 +3,12 @@ package me.shadaj.bio.sequences
 trait AminoAcid extends BaseLike
 
 object AminoAcid {
-  val acids = List(Phe, Leu, Ser, Tyr, Cys, Trp, Pro, His, Gln, Arg, Ile, Met, Thr, Asn, Lys, Val, Ala, Asp, Glu, Gly, Stop)
-  val fromChar = acids.map(a => a.short -> a).toMap
+  val fromInt = Array(Phe, Leu, Ser, Tyr, Cys, Trp, Pro, His, Gln, Arg, Ile, Met, Thr, Asn, Lys, Val, Ala, Asp, Glu, Gly, Stop)
+  val charMap = fromInt.map(b => b.short -> b).toMap
+  def fromChar(c: Char) = {
+    charMap.getOrElse(c, throw new IllegalArgumentException("Non-Amino Acid Base found: " + c))
+  }
+  val toInt: AminoAcid => Int = fromInt.zipWithIndex.toMap
 }
 
 object Phe extends AminoAcid {

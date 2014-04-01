@@ -21,7 +21,7 @@ class BitStorage(bitsPerGroup: Int, data: Array[Int]) {
     }
   }
   
-  def apply(loc: Int) = {
+  def apply(loc: Int): Int = {
     val (storageIndex, indexInStorage, overflow) = calcIndices(loc)
     val bitmask = ((1 << bitsPerGroup) - 1) << indexInStorage
     val withoutOverflow = (storage(storageIndex) & bitmask) >>> indexInStorage
@@ -32,8 +32,16 @@ class BitStorage(bitsPerGroup: Int, data: Array[Int]) {
       withoutOverflow | (overflowed << (bitsPerGroup - overflow))
     }
   }
+  
+  def apply[T](loc: Int, f: Int => T): T = {
+    f(apply(loc))
+  }
 }
 
 object BitStorage {
   val BitsPerInt = 32
+  
+  def apply[T](bitsPerGroup: Int, data: Array[T], f: T => Int): BitStorage = {
+    new BitStorage(bitsPerGroup, data.map(f))
+  }
 }

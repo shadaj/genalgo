@@ -15,22 +15,22 @@ object Base {
 
 trait DNABase extends Base
 object DNABase {
-  val charMap = Map('A' -> A, 'C' -> C, 'G' -> G, 'T' -> T)
+  val fromInt = Array(A, C, G, T)
+  val charMap = fromInt.map(b => b.short -> b).toMap
   def fromChar(c: Char) = {
     charMap.getOrElse(c, throw new IllegalArgumentException("Non-DNA Base found: " + c))
   }
-  val fromInt: Int => DNABase = Array(A, C, G, T)
-  val toInt: DNABase => Int = Map(A -> 0, C -> 1, G -> 2, T -> 3)
+  val toInt: DNABase => Int = fromInt.zipWithIndex.toMap
 }
 
 trait RNABase extends Base
 object RNABase {
-  val charMap = Map('A' -> A, 'C' -> C, 'G' -> G, 'U' -> U)
+  val fromInt = Array(A, C, G, U)
+  val charMap = fromInt.map(b => b.short -> b).toMap
   def fromChar(c: Char) = {
     charMap.getOrElse(c, throw new IllegalArgumentException("Non-RNA Base found: " + c))
   }
-  val fromInt: Int => RNABase = Array(A, C, G, U)
-  val toInt: RNABase => Int = Map(A -> 0, C -> 1, G -> 2, U -> 3)
+  val toInt: RNABase => Int = fromInt.zipWithIndex.toMap
 }
 
 case object A extends DNABase with RNABase {

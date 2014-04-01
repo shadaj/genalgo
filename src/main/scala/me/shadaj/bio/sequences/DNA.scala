@@ -4,18 +4,20 @@ import scala.collection.generic.CanBuildFrom
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Builder
 
+import me.shadaj.bio.util.BitStorage
+
 import Base.Bitmask
 import Base.BitsPerGroup
 import Base.LengthPerInt
 
-class DNA private (innerStorage: Array[Int], val length: Int) extends Sequence[DNABase, DNA] {
+class DNA private (storage: BitStorage, val length: Int) extends Sequence[DNABase, DNA] {
   import DNA._
 
   override protected[this] def newBuilder: Builder[DNABase, DNA] = DNA.newBuilder
 
   def apply(index: Int): DNABase = {
     if (index < 0 || index >= length) throw new IndexOutOfBoundsException
-    DNABase.fromInt(innerStorage(index / LengthPerInt) >> (index % LengthPerInt * BitsPerGroup) & Bitmask)
+    storage(index, DNABase.fromInt)
   }
 
   def complement: DNA = {
@@ -51,12 +53,7 @@ object DNA {
   }
 
   def fromSeq(seq: IndexedSeq[DNABase]): DNA = {
-    val innerStorage = new Array[Int]((seq.length + Bitmask - 1) / Bitmask)
-    for (i <- 0 until seq.length) {
-      innerStorage(i / LengthPerInt) |= DNABase.toInt(seq(i)) << (i % Bitmask * BitsPerGroup)
-    }
-
-    new DNA(innerStorage, seq.length)
+    new DNA(BitStorage(2, seq.toArray, DNABase.toInt), seq.length)
   }
 
   def newBuilder: Builder[DNABase, DNA] = new ArrayBuffer mapResult fromSeq
