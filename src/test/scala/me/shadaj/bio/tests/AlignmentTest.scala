@@ -12,7 +12,7 @@ import me.shadaj.bio.sequences.SequenceString
 
 class GlobalAlignmentTest extends FunSuite {
   implicit val strategy = GlobalAlignment
-  
+
   test("empty sequences should have alignment score of 0") {
     val alignment = "".asProtein.align("".asProtein, new BLOSUM62(5))
     assert(alignment.score === 0)
@@ -46,7 +46,7 @@ class GlobalAlignmentTest extends FunSuite {
 
 class LocalAlignmentTest extends FunSuite {
   implicit val strategy = LocalAlignment
-  
+
   test("empty sequences should have alignment score of 0") {
     val alignment = "".asProtein.align("".asProtein, new BLOSUM62(5))
     assert(alignment.score === 0)
@@ -64,7 +64,7 @@ class LocalAlignmentTest extends FunSuite {
   }
   
   // https://stepic.org/media/attachments/lessons/247/local_alignment.txt
-  test("Stepic Large Dataset") {
+  test("Stepic Extra Dataset") {
     val proteins = Source.fromInputStream(getClass().getResourceAsStream("/local_alignment_test_proteins.txt")).getLines
     val p1 = proteins.next.asProtein
     val p2 = proteins.next.asProtein

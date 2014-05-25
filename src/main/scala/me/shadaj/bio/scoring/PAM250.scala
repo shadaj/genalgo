@@ -1,8 +1,6 @@
 package me.shadaj.bio.scoring
 
 import scala.io.Source
-import me.shadaj.bio.sequences.BaseLike
-import me.shadaj.bio.sequences.BaseLike
 import me.shadaj.bio.sequences.AminoAcid
 
 class PAM250(val indelPenalty: Int) extends ScoringMatrix[AminoAcid] {
@@ -14,7 +12,7 @@ class PAM250(val indelPenalty: Int) extends ScoringMatrix[AminoAcid] {
 }
 
 object PAM250 {
-  private val source = Source.fromInputStream(getClass().getResourceAsStream("/pam250.txt")).getLines
+  private val source = Source.fromInputStream(getClass.getResourceAsStream("/pam250.txt")).getLines
   private val xAxis = source.next.trim.split(' ').filter(_ != "").map(_.head)
   private val scorer = source.flatMap { s =>
     val y = AminoAcid.fromChar(s.head)

@@ -4,7 +4,6 @@ import scala.io.Source
 import me.shadaj.bio.sequences.RNA
 import me.shadaj.bio.sequences.AminoAcid
 import me.shadaj.bio.sequences.Protein
-import me.shadaj.bio.sequences.RNABase
 import me.shadaj.bio.sequences.DNA
 import me.shadaj.bio.sequences.DNABase
 
@@ -28,8 +27,6 @@ object StandardTable extends CodonTable {
   }
   
   def proteinForRNA(seq: RNA) = {
-    println(seq)
-    println(seq.grouped(3).toList)
     Protein.fromSeq(seq.grouped(3).map(aminoForCodon).toIndexedSeq)
   }
   

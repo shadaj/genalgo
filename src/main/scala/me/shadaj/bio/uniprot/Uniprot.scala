@@ -5,7 +5,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.io.Source
 import me.shadaj.bio.fasta._
-import me.shadaj.bio.util.Util.retry
 import me.shadaj.bio.sequences.AminoAcid
 import me.shadaj.bio.sequences.Protein
 

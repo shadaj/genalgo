@@ -38,7 +38,10 @@ object LocalAlignment extends AlignmentStrategy {
     }
     
     @tailrec
-    def getAlignment(alignmentA: AlignmentSequence = new AlignmentSequence(IndexedSeq()), alignmentB: AlignmentSequence = new AlignmentSequence(IndexedSeq()), i: Int = seq1.length, j: Int = seq2.length): Alignment = {
+    def getAlignment(alignmentA: AlignmentSequence = new AlignmentSequence(IndexedSeq()),
+                     alignmentB: AlignmentSequence = new AlignmentSequence(IndexedSeq()),
+                     i: Int = bestI,
+                     j: Int = bestJ): Alignment = {
       if (i == 0 && j == 0) {
         new Alignment(alignmentA, alignmentB, lengths(bestI)(bestJ))
       } else {
@@ -53,8 +56,7 @@ object LocalAlignment extends AlignmentStrategy {
         }
       }
     }
-    
 
-    getAlignment(i = bestI, j = bestJ)
+    getAlignment()
   }
 }

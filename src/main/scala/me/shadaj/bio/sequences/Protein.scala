@@ -1,6 +1,5 @@
 package me.shadaj.bio.sequences
 
-import scala.collection.IndexedSeqLike
 import scala.collection.generic.CanBuildFrom
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Builder
@@ -8,14 +7,12 @@ import scala.collection.mutable.Builder
 import me.shadaj.bio.util.BitStorage
 
 class Protein(storage: BitStorage, val length: Int) extends Sequence[AminoAcid, Protein] {
-  import Protein._
-  
   def apply(index: Int): AminoAcid = {
     if (index < 0 || index >= length) throw new IndexOutOfBoundsException
     storage(index, AminoAcid.fromInt)
   }
   
-  override protected[this] def newBuilder: Builder[AminoAcid, Protein] = Protein.newBuilder
+  def seqBuilder: Builder[AminoAcid, Protein] = Protein.newBuilder
 }
 
 object Protein {

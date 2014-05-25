@@ -4,19 +4,16 @@ import scala.collection.generic.CanBuildFrom
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Builder
 import me.shadaj.bio.sequences.BaseLike
-import me.shadaj.bio.sequences.Indel
 import me.shadaj.bio.sequences.Sequence
-import me.shadaj.bio.sequences.AminoAcid
 
 class AlignmentSequence(innerSequence: IndexedSeq[BaseLike]) extends Sequence[BaseLike, AlignmentSequence] {
-  import AlignmentSequence._
-  
+
   def apply(index: Int) = {
     innerSequence(index)
   }
   def length = innerSequence.length
   
-  override protected[this] def newBuilder: Builder[BaseLike, AlignmentSequence] = AlignmentSequence.newBuilder
+  def seqBuilder: Builder[BaseLike, AlignmentSequence] = AlignmentSequence.newBuilder
 }
 
 object AlignmentSequence {

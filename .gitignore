@@ -5,3 +5,5 @@ project/target
 .settings
 bin/
 .cache
+.idea/
+*.png

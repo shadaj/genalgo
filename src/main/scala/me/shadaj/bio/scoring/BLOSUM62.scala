@@ -1,8 +1,6 @@
 package me.shadaj.bio.scoring
 
 import scala.io.Source
-import me.shadaj.bio.sequences.BaseLike
-import me.shadaj.bio.sequences.BaseLike
 import me.shadaj.bio.sequences.AminoAcid
 
 class BLOSUM62(val indelPenalty: Int) extends ScoringMatrix[AminoAcid] {

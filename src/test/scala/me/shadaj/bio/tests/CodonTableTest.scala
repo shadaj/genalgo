@@ -1,13 +1,6 @@
 package me.shadaj.bio.tests
 
 import org.scalatest.FunSuite
-import me.shadaj.bio.uniprot.Uniprot
-import scala.io.Source
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util.Success
-import scala.util.Failure
-import scala.concurrent.Await
-import scala.concurrent.duration._
 import me.shadaj.bio.codontable.StandardTable
 import me.shadaj.bio.sequences.RNA
 import me.shadaj.bio.sequences.U

@@ -2,15 +2,13 @@ package me.shadaj.bio.sequences
 
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Builder
-import scala.collection.IndexedSeqLike
 import scala.collection.generic.CanBuildFrom
-import Base._
 import me.shadaj.bio.util.BitStorage
 import me.shadaj.bio.codontable.CodonTable
 
 class RNA private (storage: BitStorage, val length: Int) extends Sequence[RNABase, RNA] {
-  implicit def canBuildFrom = RNA.canBuildFrom
-  override protected[this] def newBuilder: Builder[RNABase, RNA] = RNA.newBuilder
+  import RNA._
+  def seqBuilder: Builder[RNABase, RNA] = RNA.newBuilder
   
   def apply(index: Int): RNABase = {
     if (index < 0 || index >= length) throw new IndexOutOfBoundsException
@@ -18,27 +16,23 @@ class RNA private (storage: BitStorage, val length: Int) extends Sequence[RNABas
   }
   
   def complement: RNA = {
-    map { base =>
-      base match {
-        case A => U
-        case U => A
-        case G => C
-        case C => G
-      }
+    map {
+      case A => U
+      case U => A
+      case G => C
+      case C => G
     }
   }
   
   def reverseComplement: RNA = {
-    reverse complement
+    reverse.complement
   }
   
   def toDNA: DNA = {
     DNA.fromSeq {
       map {
-        _ match {
-          case U => T
-          case x: DNABase => x
-        }
+        case U => T
+        case x: DNABase => x
       }
     }
   }
@@ -57,9 +51,9 @@ object RNA {
     new RNA(BitStorage(2, seq.toArray, RNABase.toInt), seq.length)
   }
   
-  def newBuilder: Builder[RNABase, RNA] = new ArrayBuffer mapResult fromSeq
+  def newBuilder: Builder[RNABase, RNA] = (new ArrayBuffer).mapResult(fromSeq)
   
-  implicit def canBuildFrom = new CanBuildFrom[RNA, RNABase, RNA] {
+  implicit def canBuildFrom: CanBuildFrom[RNA, RNABase, RNA] = new CanBuildFrom[RNA, RNABase, RNA] {
     def apply() = newBuilder
     def apply(from: RNA) = newBuilder
   }

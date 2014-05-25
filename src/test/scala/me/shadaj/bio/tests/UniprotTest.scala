@@ -4,7 +4,6 @@ import org.scalatest.FunSuite
 import me.shadaj.bio.uniprot.Uniprot
 import scala.io.Source
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util.Success
 import scala.util.Failure
 import scala.concurrent.Await
 import scala.concurrent.duration._
@@ -16,11 +15,9 @@ class UniprotTest extends FunSuite {
   }
 
   test("proper exception for invalid data") {
-    Uniprot.getFasta("P").onComplete { result =>
-      result match {
-        case Failure(_: IllegalArgumentException) => assert(true)
-        case other => assert(false)
-      }
+    Uniprot.getFasta("P").onComplete {
+      case Failure(_: IllegalArgumentException) => assert(true)
+      case other => assert(false)
     }
   }
 }
