@@ -15,6 +15,9 @@ object Base {
 
 trait DNABase extends Base
 object DNABase {
+  // A and T (and G and C) bit representations are complementary with this ordering
+  // DNA bits can be reused for RNA because T and U share the same index
+  // See RNABase
   val fromInt = Array(A, C, G, T)
   val charMap = fromInt.map(b => b.short -> b).toMap
   def fromChar(c: Char) = {

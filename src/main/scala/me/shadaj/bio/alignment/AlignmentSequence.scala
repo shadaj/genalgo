@@ -4,9 +4,9 @@ import scala.collection.generic.CanBuildFrom
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Builder
 import me.shadaj.bio.sequences.BaseLike
-import me.shadaj.bio.sequences.Sequence
+import me.shadaj.bio.sequences.BioSequence
 
-class AlignmentSequence(innerSequence: IndexedSeq[BaseLike]) extends Sequence[BaseLike, AlignmentSequence] {
+class AlignmentSequence(innerSequence: IndexedSeq[BaseLike]) extends BioSequence[BaseLike, AlignmentSequence] {
 
   def apply(index: Int) = {
     innerSequence(index)

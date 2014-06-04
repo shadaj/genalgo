@@ -7,9 +7,7 @@ import scala.collection.mutable.Builder
 import me.shadaj.bio.util.BitStorage
 
 
-class DNA private (storage: BitStorage, val length: Int) extends Sequence[DNABase, DNA] {
-  import DNA._
-
+class DNA private[sequences] (storage: BitStorage, val length: Int) extends BioSequence[DNABase, DNA] {
   def seqBuilder: Builder[DNABase, DNA] = DNA.newBuilder
 
   def apply(index: Int): DNABase = {
@@ -18,12 +16,7 @@ class DNA private (storage: BitStorage, val length: Int) extends Sequence[DNABas
   }
 
   def complement: DNA = {
-    map {
-      case A => T
-      case T => A
-      case G => C
-      case C => G
-    }
+    new DNA(storage.complement, length)
   }
 
   def reverseComplement: DNA = {
@@ -31,25 +24,24 @@ class DNA private (storage: BitStorage, val length: Int) extends Sequence[DNABas
   }
 
   def toRNA: RNA = {
-    RNA.fromSeq {
-      map {
-        case T => U
-        case x: RNABase => x
-      }
-    }
+    new RNA(storage, length)
   }
 }
 
 object DNA {
   def apply(str: String): DNA = {
-    fromSeq(str.map(DNABase.fromChar))
+    DNA(str.map(DNABase.fromChar))
   }
 
-  def fromSeq(seq: IndexedSeq[DNABase]): DNA = {
+  def apply(bases: DNABase*): DNA = {
+    DNA(bases.toIndexedSeq)
+  }
+
+  def apply(seq: IndexedSeq[DNABase]): DNA = {
     new DNA(BitStorage(2, seq.toArray, DNABase.toInt), seq.length)
   }
 
-  def newBuilder: Builder[DNABase, DNA] = (new ArrayBuffer).mapResult(fromSeq)
+  def newBuilder: Builder[DNABase, DNA] = (new ArrayBuffer).mapResult(apply)
 
   implicit def canBuildFrom: CanBuildFrom[DNA, DNABase, DNA] = new CanBuildFrom[DNA, DNABase, DNA] {
     def apply() = newBuilder

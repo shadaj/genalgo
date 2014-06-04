@@ -6,8 +6,7 @@ import scala.collection.generic.CanBuildFrom
 import me.shadaj.bio.util.BitStorage
 import me.shadaj.bio.codontable.CodonTable
 
-class RNA private (storage: BitStorage, val length: Int) extends Sequence[RNABase, RNA] {
-  import RNA._
+class RNA private[sequences] (storage: BitStorage, val length: Int) extends BioSequence[RNABase, RNA] {
   def seqBuilder: Builder[RNABase, RNA] = RNA.newBuilder
   
   def apply(index: Int): RNABase = {
@@ -16,12 +15,7 @@ class RNA private (storage: BitStorage, val length: Int) extends Sequence[RNABas
   }
   
   def complement: RNA = {
-    map {
-      case A => U
-      case U => A
-      case G => C
-      case C => G
-    }
+    new RNA(storage.complement, length)
   }
   
   def reverseComplement: RNA = {
@@ -29,12 +23,7 @@ class RNA private (storage: BitStorage, val length: Int) extends Sequence[RNABas
   }
   
   def toDNA: DNA = {
-    DNA.fromSeq {
-      map {
-        case U => T
-        case x: DNABase => x
-      }
-    }
+    new DNA(storage, length)
   }
   
   def toProtein(implicit codonTable: CodonTable): Protein = {
@@ -44,14 +33,18 @@ class RNA private (storage: BitStorage, val length: Int) extends Sequence[RNABas
 
 object RNA {
   def apply(str: String): RNA = {
-    fromSeq(str.map(RNABase.fromChar))
+    RNA(str.map(RNABase.fromChar))
   }
-  
-  def fromSeq(seq: IndexedSeq[RNABase]): RNA = {
+
+  def apply(bases: RNABase*): RNA = {
+    RNA(bases.toIndexedSeq)
+  }
+
+  def apply(seq: IndexedSeq[RNABase]): RNA = {
     new RNA(BitStorage(2, seq.toArray, RNABase.toInt), seq.length)
   }
   
-  def newBuilder: Builder[RNABase, RNA] = (new ArrayBuffer).mapResult(fromSeq)
+  def newBuilder: Builder[RNABase, RNA] = (new ArrayBuffer).mapResult(apply)
   
   implicit def canBuildFrom: CanBuildFrom[RNA, RNABase, RNA] = new CanBuildFrom[RNA, RNABase, RNA] {
     def apply() = newBuilder

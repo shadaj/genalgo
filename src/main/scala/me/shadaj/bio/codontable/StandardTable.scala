@@ -15,7 +15,7 @@ object StandardTable extends CodonTable {
   private val table = lines.flatMap { l =>
     l.split('\t').map { p =>
       val split = p.split(" ")
-      DNA.fromSeq(split(0).map(DNABase.fromChar)).toRNA -> AminoAcid.fromChar(split(1).head)
+      DNA(split(0).map(DNABase.fromChar)).toRNA -> AminoAcid.fromChar(split(1).head)
     }
   }.toMap
   
@@ -27,7 +27,7 @@ object StandardTable extends CodonTable {
   }
   
   def proteinForRNA(seq: RNA) = {
-    Protein.fromSeq(seq.grouped(3).map(aminoForCodon).toIndexedSeq)
+    Protein(seq.grouped(3).map(aminoForCodon).toIndexedSeq)
   }
   
   def codonsForAmino(acid: AminoAcid) = {

@@ -11,10 +11,10 @@ import me.shadaj.bio.sequences.Ser
 
 class CodonTableTest extends FunSuite {
   test("Standard/Codon") {
-    assert(StandardTable.aminoForCodon(RNA.fromSeq(IndexedSeq(U, U, U))) === Phe)
+    assert(StandardTable.aminoForCodon(RNA(U,U,U)) === Phe)
   }
   
   test("Standard/RNA") {
-    assert(StandardTable.proteinForRNA(RNA.fromSeq(IndexedSeq(U, U, U, U, C, U))) === Protein.fromSeq(IndexedSeq(Phe, Ser)))
+    assert(StandardTable.proteinForRNA(RNA(U, U, U, U, C, U)) === Protein(Phe, Ser))
   }
 }

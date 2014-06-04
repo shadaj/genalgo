@@ -5,10 +5,10 @@ import scala.annotation.tailrec
 import me.shadaj.bio.scoring.ScoringMatrix
 import me.shadaj.bio.sequences.BaseLike
 import me.shadaj.bio.sequences.Indel
-import me.shadaj.bio.sequences.Sequence
+import me.shadaj.bio.sequences.BioSequence
 
 object LocalAlignment extends AlignmentStrategy {
-  def align[B <: BaseLike, C <: Sequence[B, _]](seq1: C, seq2: C, scorer: ScoringMatrix[B]): Alignment = {
+  def align[B <: BaseLike, C <: BioSequence[B, _]](seq1: C, seq2: C, scorer: ScoringMatrix[B]): Alignment = {
     val lengths = Array.fill(seq1.length + 1, seq2.length + 1)(0)
 
     for (i <- 0 to seq1.length) {

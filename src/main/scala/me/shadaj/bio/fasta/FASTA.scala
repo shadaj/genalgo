@@ -3,13 +3,13 @@ package me.shadaj.bio.fasta
 import me.shadaj.bio.sequences.BaseLike
 import me.shadaj.bio.sequences.DNA
 import me.shadaj.bio.sequences.DNABase
-import me.shadaj.bio.sequences.Sequence
+import me.shadaj.bio.sequences.BioSequence
 import me.shadaj.bio.sequences.RNABase
 import me.shadaj.bio.sequences.RNA
 import me.shadaj.bio.sequences.AminoAcid
 import me.shadaj.bio.sequences.Protein
 
-case class FASTA[B <: BaseLike, C <: Sequence[B, _]](id: String, sequence: C)
+case class FASTA[B <: BaseLike, C <: BioSequence[B, _]](id: String, sequence: C)
 
 object FASTAParser {
   def parseDNA(data: String): List[FASTA[DNABase, DNA]] = {
