@@ -4,7 +4,7 @@ name := "genalgo"
 
 scalaVersion := "2.11.2"
 
-version := "0.1"
+version := "0.1.1-SNAPSHOT"
 
 resolvers += "Sonatype Releases" at "http://oss.sonatype.org/content/repositories/releases"
 
