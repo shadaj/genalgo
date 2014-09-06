@@ -7,7 +7,7 @@ import me.shadaj.genalgo.scoring.ScoringMatrix
 
 trait BioSequence[B <: BaseLike, C <: BioSequence[B, _]] extends IndexedSeq[B] with IndexedSeqLike[B, C] {
   def seqBuilder: Builder[B, C]
-  final override protected[this] def newBuilder: Builder[B, C] = seqBuilder
+  final override def newBuilder: Builder[B, C] = seqBuilder
     
   def hammingDistance(that: C) = {
     zip(that).count { case (a, b) => a != b}

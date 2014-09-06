@@ -1,15 +1,18 @@
 package me.shadaj.genalgo.alignment
 
-import me.shadaj.genalgo.sequences.Indel
+import me.shadaj.genalgo.sequences.{BioSequence, BaseLike, Indel}
 import java.awt.image.BufferedImage
 import java.awt.{Color, Graphics2D}
 import java.io.File
 import javax.imageio.ImageIO
 
-class Alignment(val seq1: AlignmentSequence, val seq2: AlignmentSequence, val score: Int) {
+class Alignment[B <: BaseLike, C <: BioSequence[B, _]](
+    val seq1: AlignmentSequence[B, C],
+    val seq2: AlignmentSequence[B, C],
+    val score: Int) {
   override def toString = {
     val comparison = seq1.zip(seq2).map { case (b1, b2) =>
-      if (b1 == Indel || b2 == Indel) {
+      if (b1.isRight || b2.isRight) {
         " "
       } else if (b1 != b2) {
         ":"
@@ -27,10 +30,10 @@ class Alignment(val seq1: AlignmentSequence, val seq2: AlignmentSequence, val sc
     graphics.setColor(Color.white)
     graphics.fillRect(0, 0, comparisonWidth, height)
     seq1.zip(seq2).zipWithIndex.foreach { case ((b1, b2), index) =>
-      if (b1 == Indel) {
+      if (b1.isRight) {
         graphics.setColor(Color.blue)
         graphics.drawLine(index, 0, index, height/2)
-      } else if (b2 == Indel) {
+      } else if (b2.isRight) {
         graphics.setColor(Color.blue)
         graphics.drawLine(index, height/2, index, height)
       } else if (b1 != b2) {

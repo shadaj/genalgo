@@ -7,8 +7,11 @@ import me.shadaj.genalgo.sequences.BaseLike
 import me.shadaj.genalgo.sequences.Indel
 import me.shadaj.genalgo.sequences.BioSequence
 
+import scala.collection.generic.CanBuildFrom
+
 object GlobalAlignment extends AlignmentStrategy {
-  def align[B <: BaseLike, C <: BioSequence[B, _]](seq1: C, seq2: C, scorer: ScoringMatrix[B]): Alignment = {
+  def align[B <: BaseLike, C <: BioSequence[B, _]]
+    (seq1: C, seq2: C, scorer: ScoringMatrix[B]): Alignment[B, C] = {
     val lengths = Array.fill(seq1.length + 1, seq2.length + 1)(0)
 
     for (i <- 1 to seq1.length) {
@@ -27,21 +30,28 @@ object GlobalAlignment extends AlignmentStrategy {
         matchCase max deleteCase max insertCase
       }
     }
-    
+
     @tailrec
-    def getAlignment(alignmentA: AlignmentSequence = new AlignmentSequence(IndexedSeq()),
-                     alignmentB: AlignmentSequence = new AlignmentSequence(IndexedSeq()),
+    def getAlignment(indelsFromEndA: Array[Int] = Array(),
+                     indelsFromEndB: Array[Int] = Array(),
+                     fromEnd: Int = 0,
                      i: Int = seq1.length,
-                     j: Int = seq2.length): Alignment = {
+                     j: Int = seq2.length): Alignment[B, C] = {
       if (i == 0 && j == 0) {
-        new Alignment(alignmentA, alignmentB, lengths(seq1.length)(seq2.length))
+        val lastIndex = indelsFromEndA.length + seq1.length - 1
+        val aIndels = indelsFromEndA.map(lastIndex +)
+        val bIndels = indelsFromEndB.map(lastIndex +)
+        new Alignment(
+          new AlignmentSequence(seq1, aIndels),
+          new AlignmentSequence(seq2, bIndels),
+          lengths(seq1.length)(seq2.length))
       } else {
         if (i > 0 && j > 0 && lengths(i)(j) == (lengths(i - 1)(j - 1) + scorer.score(seq1(i - 1), seq2(j - 1)))) {
-          getAlignment(seq1(i - 1) +: alignmentA, seq2(j - 1) +: alignmentB, i - 1, j - 1)
+          getAlignment(indelsFromEndA, indelsFromEndB, fromEnd - 1, i - 1, j - 1)
         } else if (i > 0 && lengths(i)(j) == (lengths(i - 1)(j) - scorer.indelPenalty)) {
-          getAlignment(seq1(i - 1) +: alignmentA, Indel +: alignmentB, i - 1, j)
+          getAlignment(indelsFromEndA, indelsFromEndB :+ fromEnd, fromEnd - 1, i - 1, j)
         } else {
-          getAlignment(Indel +: alignmentA, seq2(j - 1) +: alignmentB, i, j - 1)
+          getAlignment(indelsFromEndA :+ fromEnd, indelsFromEndB, fromEnd - 1, i, j - 1)
         }
       }
     }
