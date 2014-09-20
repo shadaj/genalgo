@@ -1,5 +1,6 @@
 package me.shadaj.genalgo.sequences
 
+import scala.collection.{mutable, IndexedSeqLike}
 import scala.collection.generic.CanBuildFrom
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Builder
@@ -7,8 +8,10 @@ import scala.collection.mutable.Builder
 import me.shadaj.genalgo.util.BitStorage
 
 
-class DNA private[sequences] (storage: BitStorage, val length: Int) extends BioSequence[DNABase, DNA] {
-  def seqBuilder: Builder[DNABase, DNA] = DNA.newBuilder
+final class DNA private[sequences] (storage: BitStorage, val length: Int) extends BioSequence[DNABase] with IndexedSeqLike[DNABase, DNA] {
+  override type C = DNA
+
+  override def seqBuilder: mutable.Builder[DNABase, DNA] = DNA.newBuilder
 
   def apply(index: Int): DNABase = {
     if (index < 0 || index >= length) throw new IndexOutOfBoundsException

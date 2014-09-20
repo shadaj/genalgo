@@ -1,18 +1,21 @@
 package me.shadaj.genalgo.sequences
 
+import scala.collection.IndexedSeqLike
 import scala.collection.generic.CanBuildFrom
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Builder
 
 import me.shadaj.genalgo.util.BitStorage
 
-class Protein private(storage: BitStorage, val length: Int) extends BioSequence[AminoAcid, Protein] {
+final class Protein private(storage: BitStorage, val length: Int) extends BioSequence[AminoAcid] with IndexedSeqLike[AminoAcid, Protein] {
+  type C = Protein
+
+  override def seqBuilder: Builder[AminoAcid, Protein] = Protein.newBuilder
+
   def apply(index: Int): AminoAcid = {
     if (index < 0 || index >= length) throw new IndexOutOfBoundsException
     storage(index, AminoAcid.fromInt)
   }
-  
-  def seqBuilder: Builder[AminoAcid, Protein] = Protein.newBuilder
 }
 
 object Protein {

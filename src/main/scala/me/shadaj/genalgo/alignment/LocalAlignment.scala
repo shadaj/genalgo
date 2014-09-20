@@ -8,7 +8,7 @@ import me.shadaj.genalgo.sequences.Indel
 import me.shadaj.genalgo.sequences.BioSequence
 
 object LocalAlignment extends AlignmentStrategy {
-  def align[B <: BaseLike, C <: BioSequence[B, _]](seq1: C, seq2: C, scorer: ScoringMatrix[B]): Alignment[B, C] = {
+  def align[B <: BaseLike, C <: BioSequence[B]](seq1: C, seq2: C, scorer: ScoringMatrix[B]): Alignment[B, C] = {
     val lengths = Array.fill(seq1.length + 1, seq2.length + 1)(0)
 
     for (i <- 0 to seq1.length) {
@@ -59,10 +59,10 @@ object LocalAlignment extends AlignmentStrategy {
         val bIndels = indelsFromEndB.map(lastIndexB +)
         new Alignment(
           new AlignmentSequence(
-            seq1.drop(i).asInstanceOf[C].dropRight(indelsAtEndA).asInstanceOf[C],
+            seq1.drop(i).dropRight(indelsAtEndA),
             aIndels.map(_ - i)),
           new AlignmentSequence(
-            seq2.drop(j).asInstanceOf[C].dropRight(indelsAtEndB).asInstanceOf[C],
+            seq2.drop(j).dropRight(indelsAtEndB),
             bIndels.map(_ - j)),
           lengths(bestI)(bestJ))
       }

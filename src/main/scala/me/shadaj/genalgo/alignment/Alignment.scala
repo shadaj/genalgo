@@ -6,9 +6,9 @@ import java.awt.{Color, Graphics2D}
 import java.io.File
 import javax.imageio.ImageIO
 
-class Alignment[B <: BaseLike, C <: BioSequence[B, _]](
-    val seq1: AlignmentSequence[B, C],
-    val seq2: AlignmentSequence[B, C],
+class Alignment[B <: BaseLike, C <: BioSequence[B]](
+    val seq1: AlignmentSequence[B],
+    val seq2: AlignmentSequence[B],
     val score: Int) {
   override def toString = {
     val comparison = seq1.zip(seq2).map { case (b1, b2) =>

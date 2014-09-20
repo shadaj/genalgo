@@ -10,7 +10,7 @@ import me.shadaj.genalgo.sequences.BioSequence
 import scala.collection.generic.CanBuildFrom
 
 object GlobalAlignment extends AlignmentStrategy {
-  def align[B <: BaseLike, C <: BioSequence[B, _]]
+  def align[B <: BaseLike, C <: BioSequence[B]]
     (seq1: C, seq2: C, scorer: ScoringMatrix[B]): Alignment[B, C] = {
     val lengths = Array.fill(seq1.length + 1, seq2.length + 1)(0)
 

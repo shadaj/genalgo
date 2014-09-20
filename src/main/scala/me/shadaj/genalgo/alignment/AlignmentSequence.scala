@@ -8,19 +8,17 @@ import scala.collection.{IndexedSeqLike, mutable}
 
 import AlignmentSequence._
 
-class AlignmentSequence[B <: BaseLike, C <: BioSequence[B, _]](original: C, indelLocations: Array[Int])
+final class AlignmentSequence[B <: BaseLike](private [AlignmentSequence] val original: BioSequence[B], indelLocations: Array[Int])
   extends IndexedSeq[AlignmentBase[B]]
-  with IndexedSeqLike[AlignmentBase[B], AlignmentSequence[B, C]] {
+  with IndexedSeqLike[AlignmentBase[B], AlignmentSequence[B]] {
+  type C = this.type
+
   val sortedIndels = indelLocations.sortBy(- _).zipWithIndex
   val indelsCount = indelLocations.length
   val lastIndelIndex = indelsCount - 1
 
-  def originalBuilder = {
-    original.newBuilder.asInstanceOf[mutable.Builder[B, C]]
-  }
-
-  final override def newBuilder: mutable.Builder[AlignmentBase[B], AlignmentSequence[B, C]] = {
-    AlignmentSequence.builder[B, C](originalBuilder)
+  override def newBuilder: mutable.Builder[AlignmentBase[B], AlignmentSequence[B]] = {
+    AlignmentSequence.builder[B, original.C](original.newBuilder)
   }
 
   def apply(index: Int) = {
@@ -44,26 +42,26 @@ class AlignmentSequence[B <: BaseLike, C <: BioSequence[B, _]](original: C, inde
 object AlignmentSequence {
   type AlignmentBase[B] = Either[B, Indel.type]
 
-  def fromSeq[B <: BaseLike, C <: BioSequence[B, _]](seq: IndexedSeq[AlignmentBase[B]],
-                                                     builder: mutable.Builder[B, C]) = {
+  def fromSeq[B <: BaseLike, OC <: BioSequence[B]](seq: IndexedSeq[AlignmentBase[B]],
+                                                     builder: mutable.Builder[B, OC]) = {
     val (indelEithers, baseEithers) = seq.zipWithIndex.partition(_._1.isRight)
     val bases = baseEithers.map(_._1.left.get)
     val indels = indelEithers.map(_._2)
 
     builder ++= bases
     val newOriginal = builder.result()
-    new AlignmentSequence[B, C](newOriginal, indels.toArray)
+    new AlignmentSequence[B](newOriginal, indels.toArray)
   }
 
-  def builder[B <: BaseLike, C <: BioSequence[B, _]](builder: mutable.Builder[B, C]) = {
-    IndexedSeq.newBuilder[AlignmentBase[B]].mapResult(fromSeq[B, C](_, builder))
+  def builder[B <: BaseLike, OC <: BioSequence[B]](builder: mutable.Builder[B, OC]) = {
+    IndexedSeq.newBuilder[AlignmentBase[B]].mapResult(fromSeq[B, OC](_, builder))
   }
 
-  implicit def canBuildFrom[B <: BaseLike, C <: BioSequence[B, _]] = {
-    new CanBuildFrom[AlignmentSequence[B, C], AlignmentBase[B], AlignmentSequence[B, C]] {
+  implicit def canBuildFrom[B <: BaseLike, OC <: BioSequence[B]] = {
+    new CanBuildFrom[AlignmentSequence[B], AlignmentBase[B], AlignmentSequence[B]] {
       def apply() = new NoBuilder[AlignmentBase[B]]
-      def apply(from: AlignmentSequence[B, C]): mutable.Builder[Either[B, Indel.type], AlignmentSequence[B, C]] = {
-        builder[B, C](from.originalBuilder)
+      def apply(from: AlignmentSequence[B]): mutable.Builder[Either[B, Indel.type], AlignmentSequence[B]] = {
+        builder[B, from.original.C](from.original.newBuilder)
       }
     }
   }

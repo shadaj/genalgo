@@ -1,13 +1,16 @@
 package me.shadaj.genalgo.sequences
 
+import scala.collection.{mutable, IndexedSeqLike}
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Builder
 import scala.collection.generic.CanBuildFrom
 import me.shadaj.genalgo.util.BitStorage
 import me.shadaj.genalgo.codontable.CodonTable
 
-class RNA private[sequences] (storage: BitStorage, val length: Int) extends BioSequence[RNABase, RNA] {
-  def seqBuilder: Builder[RNABase, RNA] = RNA.newBuilder
+final class RNA private[sequences] (storage: BitStorage, val length: Int) extends BioSequence[RNABase] with IndexedSeqLike[RNABase, RNA] {
+  type C = RNA
+
+  override def seqBuilder: mutable.Builder[RNABase, RNA] = RNA.newBuilder
   
   def apply(index: Int): RNABase = {
     if (index < 0 || index >= length) throw new IndexOutOfBoundsException

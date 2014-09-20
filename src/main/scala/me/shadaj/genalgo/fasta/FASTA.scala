@@ -9,7 +9,7 @@ import me.shadaj.genalgo.sequences.RNA
 import me.shadaj.genalgo.sequences.AminoAcid
 import me.shadaj.genalgo.sequences.Protein
 
-case class FASTA[B <: BaseLike, C <: BioSequence[B, _]](id: String, sequence: C)
+case class FASTA[B <: BaseLike, C <: BioSequence[B]](id: String, sequence: C)
 
 object FASTAParser {
   def parseDNA(data: String): List[FASTA[DNABase, DNA]] = {
