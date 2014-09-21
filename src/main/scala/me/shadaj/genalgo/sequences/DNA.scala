@@ -3,7 +3,6 @@ package me.shadaj.genalgo.sequences
 import scala.collection.{mutable, IndexedSeqLike}
 import scala.collection.generic.CanBuildFrom
 import scala.collection.mutable.ArrayBuffer
-import scala.collection.mutable.Builder
 
 import me.shadaj.genalgo.util.BitStorage
 
@@ -11,6 +10,7 @@ import me.shadaj.genalgo.util.BitStorage
 final class DNA private[sequences] (storage: BitStorage, val length: Int) extends BioSequence[DNABase] with IndexedSeqLike[DNABase, DNA] {
   override type C = DNA
 
+  def self = this
   override def seqBuilder: mutable.Builder[DNABase, DNA] = DNA.newBuilder
 
   def apply(index: Int): DNABase = {
@@ -44,7 +44,7 @@ object DNA {
     new DNA(BitStorage(2, seq.toArray, DNABase.toInt), seq.length)
   }
 
-  def newBuilder: Builder[DNABase, DNA] = (new ArrayBuffer).mapResult(apply)
+  def newBuilder: mutable.Builder[DNABase, DNA] = (new ArrayBuffer).mapResult(apply)
 
   implicit def canBuildFrom: CanBuildFrom[DNA, DNABase, DNA] = new CanBuildFrom[DNA, DNABase, DNA] {
     def apply() = newBuilder

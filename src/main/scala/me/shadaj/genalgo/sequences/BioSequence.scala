@@ -5,23 +5,20 @@ import me.shadaj.genalgo.scoring.ScoringMatrix
 
 import scala.collection.{IndexedSeqLike, mutable}
 
-trait BioSequence[B <: BaseLike] extends IndexedSeq[B] { self: IndexedSeqLike[B, _] =>
-  type C <: BioSequence[B]
+trait BioSequence[B <: BaseLike] extends IndexedSeq[B] {
+  type C <: BioSequence[B] with IndexedSeqLike[B, C]
 
+  def self: C
   def seqBuilder: mutable.Builder[B, C]
   override final def newBuilder: mutable.Builder[B, C] = seqBuilder
 
   def hammingDistance(that: C) = {
     zip(that).count { case (a, b) => a != b}
   }
-  
+
   def align(that: C, scorer: ScoringMatrix[B])(implicit strategy: AlignmentStrategy) = {
-    strategy.align(this, that, scorer)
+    strategy.align(self, that, scorer)
   }
 
-  override def drop(n: Int): C = super.drop(n).asInstanceOf[C]
-
-  override def dropRight(n: Int): C = super.dropRight(n).asInstanceOf[C]
-  
-  override def toString = mkString
+  override def toString() = mkString
 }

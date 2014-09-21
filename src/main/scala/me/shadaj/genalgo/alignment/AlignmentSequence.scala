@@ -17,6 +17,7 @@ final class AlignmentSequence[B <: BaseLike](private [AlignmentSequence] val ori
   val indelsCount = indelLocations.length
   val lastIndelIndex = indelsCount - 1
 
+  def self = this
   override def newBuilder: mutable.Builder[AlignmentBase[B], AlignmentSequence[B]] = {
     AlignmentSequence.builder[B, original.C](original.newBuilder)
   }

@@ -4,13 +4,12 @@ import scala.annotation.tailrec
 
 import me.shadaj.genalgo.scoring.ScoringMatrix
 import me.shadaj.genalgo.sequences.BaseLike
-import me.shadaj.genalgo.sequences.Indel
 import me.shadaj.genalgo.sequences.BioSequence
 
-import scala.collection.generic.CanBuildFrom
+import scala.collection.IndexedSeqLike
 
 object GlobalAlignment extends AlignmentStrategy {
-  def align[B <: BaseLike, C <: BioSequence[B]]
+  def align[B <: BaseLike, C <: BioSequence[B] with IndexedSeqLike[B, C]]
     (seq1: C, seq2: C, scorer: ScoringMatrix[B]): Alignment[B, C] = {
     val lengths = Array.fill(seq1.length + 1, seq2.length + 1)(0)
 
