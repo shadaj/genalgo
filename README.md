@@ -72,3 +72,11 @@ Uniprot.getFasta("A2AAJ9").zip(Uniprot.getFasta("Q5VST9")).map { case (mouse, hu
   alignment.toImageFile(new File("obscurin.png"))
 }
 ```
+
+#### Getting started
+
+The library is published for both scala and scalajs, so you can use it not only at your server but also in the browser.
+But be aware that some work should be done to make test run on both jvm/js, until this will be done you cannot rely on scalajs version.
+Project layout is very simple. Everything is situated in genalgo folder. The code in genalgo/src is shared between jvm/js, the code
+that is inside genalgo/js and genalgo/jvm folders is specific to scalajs and scalaJVM respectively. The root project ( root) is used
+only to aggregate the building process and run tasks like publishing and testing on both jvm/js

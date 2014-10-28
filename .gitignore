@@ -1,4 +1,5 @@
 target
+project/project
 project/target
 .project
 .classpath
@@ -6,4 +7,18 @@ project/target
 bin/
 .cache
 .idea/
-*.png
+logs
+tmp
+.history
+dist
+/.idea
+/*.iml
+/out
+/.idea_modules
+/.classpath
+/RUNNING_PID
+/.settings
+/project/*-shim.sbt
+/activator-sbt-atmos-akka-shim.sbt
+/~*
+src/test/learn.sc
