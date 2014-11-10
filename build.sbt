@@ -14,7 +14,7 @@ import scala.io.Source
 lazy val publishSettings = Seq(
   repository in bintray := "denigma-releases",
   bintrayOrganization in bintray := Some("denigma"),
-  licenses += ("MPL-2.0", url("http://opensource.org/licenses/MPL-2.0"))
+  licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 )
 
 lazy val sharedSettings = Seq(
