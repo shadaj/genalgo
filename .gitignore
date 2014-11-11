@@ -1,9 +1,8 @@
 target
-project/target
 .project
 .classpath
 .settings
-bin/
-.cache
-.idea/
+.idea
+.idea_modules
 *.png
+shared/gen
