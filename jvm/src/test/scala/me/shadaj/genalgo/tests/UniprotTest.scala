@@ -16,7 +16,7 @@ class UniprotTest extends FunSuite {
 
   test("proper exception for invalid data") {
     Uniprot.getFasta("P").onComplete {
-      case Failure(_: IllegalArgumentException) => assert(true)
+      case Failure(_) => assert(true)
       case other => assert(false)
     }
   }
