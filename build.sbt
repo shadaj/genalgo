@@ -19,7 +19,7 @@ lazy val sharedSettings = Seq(
   organization := "me.shadaj",
   name := "genalgo",
   scalaVersion := "2.11.2",
-  version := "0.1.3"
+  version := "0.1.4-SNAPSHOT"
 )
 
 lazy val genalgoJsSettings =  bintraySettings ++
