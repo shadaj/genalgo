@@ -11,9 +11,7 @@ import com.inthenow.sbt.scalajs.SbtScalajs._
 
 import scala.io.Source
 
-lazy val publishSettings = Seq(
-  repository in bintray := "denigma-releases",
-  bintrayOrganization in bintray := Some("denigma"),
+lazy val publishSettings = bintrayPublishSettings ++ Seq(
   licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 )
 
@@ -21,13 +19,7 @@ lazy val sharedSettings = Seq(
   organization := "me.shadaj",
   name := "genalgo",
   scalaVersion := "2.11.2",
-  version := "0.1.3-SNAPSHOT"
-)
-
-lazy val noPublishSettings = Seq(
-  publish := (),
-  publishLocal := (),
-  publishArtifact := false
+  version := "0.1.3"
 )
 
 lazy val genalgoJsSettings =  bintraySettings ++
