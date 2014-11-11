@@ -3,11 +3,8 @@ import sbt._
 import bintray.Opts
 import bintray.Plugin.bintraySettings
 import bintray.Keys._
-import com.typesafe.sbt.packager.universal.UniversalKeys
 import scala.scalajs.sbtplugin.ScalaJSPlugin.ScalaJSKeys._
 import scala.scalajs.sbtplugin.ScalaJSPlugin._
-import com.inthenow.sbt.scalajs.SbtScalajs
-import com.inthenow.sbt.scalajs.SbtScalajs._
 
 import scala.io.Source
 
@@ -24,12 +21,11 @@ lazy val sharedSettings = Seq(
 
 lazy val genalgoJsSettings =  bintraySettings ++
                               sharedSettings ++
-                              scalajsJsSettings ++
+                              scalaJSSettings ++
                               publishSettings
 
 lazy val genalgoJvmSettings = bintraySettings ++
                               sharedSettings ++
-                              scalajsJvmSettings ++
                               publishSettings
 
 lazy val root = project.in(file(".")).aggregate(js, jvm).settings(
@@ -44,7 +40,7 @@ lazy val js = project
       baseDirectory.value / "shared" / "main" / "scala",
     unmanagedSourceDirectories in Compile +=
       baseDirectory.value / "shared" / "gen" / "scala"
-  ).enablePlugins(SbtScalajs)
+  )
 
 
 lazy val jvm = project
