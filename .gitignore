@@ -6,3 +6,4 @@ target
 .idea_modules
 *.png
 shared/gen
+shared/testGen

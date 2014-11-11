@@ -1,33 +1,31 @@
 package me.shadaj.genalgo.tests
 
-import org.scalatest.FunSuite
+import utest._
+
 import org.scalacheck.Prop.forAll
 import org.scalacheck.Arbitrary
 import org.scalacheck.Gen.oneOf
 import me.shadaj.genalgo.sequences._
-import org.scalatest.prop.Checkers
 
-class DNATest extends FunSuite with Checkers {
+object DNATest extends TestSuite {
   implicit val arbitraryDNABase: Arbitrary[DNABase] = Arbitrary(oneOf(A, G, C, T))
   implicit val arbitraryDNA = Arbitrary(Arbitrary.arbitrary[IndexedSeq[DNABase]].map(DNA.apply))
 
-  test("A complement leads to correct bases") {
-    val complementMap: Map[DNABase, DNABase] = Map(A -> T, T -> A, G -> C, C -> G)
-    check {
+  val tests = TestSuite {
+    "A complement leads to correct bases" - {
+      val complementMap: Map[DNABase, DNABase] = Map(A -> T, T -> A, G -> C, C -> G)
       forAll { (dna: DNA) =>
         val complement = dna.complement
         dna.zip(complement).forall { case (o, c) =>
           complementMap(o) == c
         }
-      }
+      }.check
     }
-  }
 
-  test("A complement of a complement is the original sequence") {
-    check {
+    "A complement of a complement is the original sequence" - {
       forAll { (dna: DNA) =>
         dna.complement.complement == dna
-      }
+      }.check
     }
   }
 }

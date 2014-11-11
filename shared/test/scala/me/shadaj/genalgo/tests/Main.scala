@@ -14,7 +14,6 @@ object Main extends App {
   val alignmentFuture = Uniprot.getFasta("A2AAJ9").zip(Uniprot.getFasta("Q5VST9")).map { case (mouse, human) =>
     val alignment = mouse.sequence.align(human.sequence, new BLOSUM62(5))
     println(alignment)
-    alignment.toImageFile(new File("obscurin.png"))
   }
 
   Await.result(alignmentFuture, Duration.Inf)
