@@ -1,9 +1,10 @@
 package me.shadaj.genalgo.tests
 
-import me.shadaj.genalgo.uniprot.Uniprot
 import me.shadaj.genalgo.scoring.BLOSUM62
 import me.shadaj.genalgo.alignment.GlobalAlignment
 import java.io.File
+import me.shadaj.genalgo.services.Uniprot
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration

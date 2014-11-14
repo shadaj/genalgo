@@ -4,7 +4,7 @@ import scala.collection.{mutable, IndexedSeqLike}
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.generic.CanBuildFrom
 import me.shadaj.genalgo.util.BitStorage
-import me.shadaj.genalgo.codontable.CodonTable
+import me.shadaj.genalgo.proteins.codontable.CodonTable
 
 final class RNA private[sequences] (storage: BitStorage, val length: Int) extends BioSequence[RNABase] with IndexedSeqLike[RNABase, RNA] {
   type C = RNA

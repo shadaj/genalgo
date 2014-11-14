@@ -1,14 +1,14 @@
-package me.shadaj.genalgo.tests
+package me.shadaj.genalgo.tests.services
 
+import me.shadaj.genalgo.tests.TestResources
+import me.shadaj.genalgo.services.Uniprot
 import utest._
-
-import me.shadaj.genalgo.uniprot.Uniprot
 import utest.ExecutionContext.RunNow
 
 object UniprotTest extends TestSuite {
   val tests = TestSuite {
     "can retrieve proper data" - {
-      Uniprot.getFasta("P20840").map(f => assert(f.sequence.toString == Resources.uniprot_test_protein.head))
+      Uniprot.getFasta("P20840").map(f => assert(f.sequence.toString == TestResources.uniprot_test_protein.head))
     }
 
     "proper exception for invalid data" - {

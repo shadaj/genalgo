@@ -1,4 +1,4 @@
-package me.shadaj.genalgo.codontable
+package me.shadaj.genalgo.proteins.codontable
 
 import me.shadaj.genalgo.Resources
 import me.shadaj.genalgo.sequences.RNA
@@ -7,8 +7,8 @@ import me.shadaj.genalgo.sequences.Protein
 import me.shadaj.genalgo.sequences.DNA
 import me.shadaj.genalgo.sequences.DNABase
 
-object StandardTable extends CodonTable {
-  private val lines = Resources.codonTables.standard
+object VertebrateMitochondrialTable extends CodonTable {
+  private val lines = Resources.codonTables.vertebrate_mitochondrial
 
   private val table = lines.flatMap { l =>
     l.split('\t').map { p =>
@@ -17,18 +17,18 @@ object StandardTable extends CodonTable {
     }
   }.toMap
 
-  def aminoForCodon(codon: RNA) = {
+  def aminoForCodon(codon: RNA): AminoAcid = {
     if (codon.length != 3) {
       throw new IllegalArgumentException("A codon's length must be 3")
     }
     table(codon)
   }
 
-  def proteinForRNA(seq: RNA) = {
+  def proteinForRNA(seq: RNA): Protein = {
     Protein(seq.grouped(3).map(aminoForCodon).toIndexedSeq)
   }
 
-  def codonsForAmino(acid: AminoAcid) = {
+  def codonsForAmino(acid: AminoAcid): List[RNA] = {
     table.filter(_._2 == acid).map(_._1).toList
   }
 }

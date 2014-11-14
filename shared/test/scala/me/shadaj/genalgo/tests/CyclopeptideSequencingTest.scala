@@ -13,7 +13,7 @@ object CyclopeptideSequencingTest extends TestSuite {
     }
 
     "Stepic Large Dataset" - {
-      val spectrum = Resources.cyclopeptide_sequencing_test_spectrum.head.split(' ').map(_.toInt)
+      val spectrum = TestResources.cyclopeptide_sequencing_test_spectrum.head.split(' ').map(_.toInt)
       assert(new ConvolutionLeaderboardSequencing(16, 84).sequence(spectrum) == "147-99-114-57-129-87-71-137-87-101-129-147-57".split('-').map(_.toInt).toList)
     }
   }

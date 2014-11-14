@@ -35,7 +35,7 @@ object GlobalAlignmentTest extends TestSuite {
 
     // https://stepic.org/media/attachments/lessons/247/global_alignment.txt
     "Stepic Extra Dataset" - {
-      val proteins = Resources.global_alignment_test_proteins
+      val proteins = TestResources.global_alignment_test_proteins
       val p1 = Protein(proteins(0))
       val p2 = Protein(proteins(1))
       val alignment = p1.align(p2, new BLOSUM62(5))
@@ -65,7 +65,7 @@ object LocalAlignmentTest extends TestSuite {
 
     // https://stepic.org/media/attachments/lessons/247/local_alignment.txt
     "Stepic Extra Dataset" - {
-      val proteins = Resources.local_alignment_test_proteins
+      val proteins = TestResources.local_alignment_test_proteins
       val p1 = Protein(proteins(0))
       val p2 = Protein(proteins(1))
       val alignment = p1.align(p2, new PAM250(5))

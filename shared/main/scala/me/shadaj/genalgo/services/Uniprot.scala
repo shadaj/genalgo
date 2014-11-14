@@ -1,10 +1,10 @@
-package me.shadaj.genalgo.uniprot
+package me.shadaj.genalgo.services
 
 import me.shadaj.genalgo.network.Requester
+import me.shadaj.genalgo.parsers._
+import me.shadaj.genalgo.sequences._
+
 import scala.concurrent.{ExecutionContext, Future}
-import me.shadaj.genalgo.fasta._
-import me.shadaj.genalgo.sequences.AminoAcid
-import me.shadaj.genalgo.sequences.Protein
 
 object Uniprot {
   def getFasta(id: String)(implicit context: ExecutionContext): Future[FASTA[AminoAcid, Protein]] = {

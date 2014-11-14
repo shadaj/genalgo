@@ -1,8 +1,8 @@
 package me.shadaj.genalgo.tests
 
+import me.shadaj.genalgo.proteins.codontable.StandardTable
 import utest._
 
-import me.shadaj.genalgo.codontable.StandardTable
 import me.shadaj.genalgo.sequences.RNA
 import me.shadaj.genalgo.sequences.U
 import me.shadaj.genalgo.sequences.Phe

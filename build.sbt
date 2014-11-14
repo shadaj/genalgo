@@ -12,24 +12,24 @@ import scala.io.Source
 lazy val publishSettings = bintrayPublishSettings ++ Seq(
   licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 )
-
-lazy val generatorSettings = Seq(
-  sourceGenerators in Compile <+= baseDirectory map { dir =>
-    val fileToWrite = dir / "shared" / "gen" / "scala" / "me/shadaj/genalgo" / "Resources.scala"
-    val folderToRead = dir / "shared" / "main" / "resources"
-    def sourceForDir(directory: File): String = {
-      directory.listFiles().map { file =>
-        if (file.isDirectory) {
-          s"""object ${file.name} {
+def sourceForDir(directory: File): String = {
+  directory.listFiles().map { file =>
+    if (file.isDirectory) {
+      s"""object ${file.name} {
              |${sourceForDir(file)}
              |}""".stripMargin
-        } else {
-          val fileLines = Source.fromFile(file).getLines().toList
-          val stringList = fileLines.map(s => '"' + s + '"').toString
-          s"""val ${file.name.split('.').head} = $stringList"""
-        }
-      }.mkString("\n")
+    } else {
+      val fileLines = Source.fromFile(file).getLines().toList
+      val stringList = fileLines.map(s => '"' + s + '"').toString
+      s"""val ${file.name.split('.').head} = $stringList"""
     }
+  }.mkString("\n")
+}
+lazy val generatorSettings = Seq(
+  sourceGenerators in Compile <+= baseDirectory map { dir =>
+    val generated = dir / "shared" / "generated"
+    val fileToWrite = generated / "main" / "scala" / "me/shadaj/genalgo" / "Resources.scala"
+    val folderToRead = dir / "shared" / "main" / "resources"
     val toWrite =
       s"""package me.shadaj.genalgo
          |object Resources {
@@ -40,24 +40,12 @@ lazy val generatorSettings = Seq(
   },
   cleanFiles <+= baseDirectory { base => base / "shared" / "gen" },
   sourceGenerators in Test <+= baseDirectory map { dir =>
-    val fileToWrite = dir / "shared" / "testGen" / "scala" / "me/shadaj/genalgo/tests" / "Resources.scala"
+    val generated = dir / "shared" / "generated"
+    val fileToWrite = generated / "test" / "scala" / "me/shadaj/genalgo/tests" / "TestResources.scala"
     val folderToRead = dir / "shared" / "test" / "resources"
-    def sourceForDir(directory: File): String = {
-      directory.listFiles().map { file =>
-        if (file.isDirectory) {
-          s"""object ${file.name} {
-             |${sourceForDir(file)}
-             |}""".stripMargin
-        } else {
-          val fileLines = Source.fromFile(file).getLines().toList
-          val stringList = fileLines.map(s => '"' + s + '"').toString
-          s"""val ${file.name.split('.').head} = $stringList"""
-        }
-      }.mkString("\n")
-    }
     val toWrite =
       s"""package me.shadaj.genalgo.tests
-         |object Resources {
+         |object TestResources {
          |${sourceForDir(folderToRead)}
          |}""".stripMargin
     IO.write(fileToWrite, toWrite)
@@ -69,7 +57,7 @@ lazy val generatorSettings = Seq(
 lazy val sharedSettings = Seq(
   organization := "me.shadaj",
   name := "genalgo",
-  scalaVersion := "2.11.2",
+  scalaVersion := "2.11.4",
   version := "0.1.4-SNAPSHOT"
 )
 
@@ -95,28 +83,20 @@ lazy val js = project
     ScalaJSKeys.preLinkJSEnv := new PhantomJSEnv,
     ScalaJSKeys.postLinkJSEnv := new PhantomJSEnv)
   .settings(
-    unmanagedSourceDirectories in Compile +=
-      baseDirectory.value / "shared" / "main" / "scala",
-    unmanagedSourceDirectories in Compile +=
-      baseDirectory.value / "shared" / "gen" / "scala",
-    unmanagedSourceDirectories in Test +=
-      baseDirectory.value / "shared" / "test" / "scala",
-    unmanagedSourceDirectories in Test +=
-      baseDirectory.value / "shared" / "testGen" / "scala"
+    unmanagedSourceDirectories in Compile +=  baseDirectory.value / "shared" / "main" / "scala",
+    managedSourceDirectories in Compile +=   baseDirectory.value / "shared" / "generated" /  "main" / "scala",
+    unmanagedSourceDirectories in Test +=  baseDirectory.value / "shared" / "test" / "scala",
+    managedSourceDirectories in Test += baseDirectory.value / "shared" / "generated" /  "test" / "scala"
   )
 
 
 lazy val jvm = project
   .settings(genalgoJvmSettings:_*)
   .settings(
-    unmanagedSourceDirectories in Compile +=
-      baseDirectory.value / "shared" / "main" / "scala",
-    unmanagedSourceDirectories in Compile +=
-      baseDirectory.value / "shared" / "gen" / "scala",
-    unmanagedSourceDirectories in Test +=
-      baseDirectory.value / "shared" / "test" / "scala",
-    unmanagedSourceDirectories in Test +=
-      baseDirectory.value / "shared" / "testGen" / "scala"
+    unmanagedSourceDirectories in Compile +=  baseDirectory.value / "shared" / "main" / "scala",
+    managedSourceDirectories in Compile +=   baseDirectory.value / "shared" / "generated" /  "main" / "scala",
+    unmanagedSourceDirectories in Test +=  baseDirectory.value / "shared" / "test" / "scala",
+    managedSourceDirectories in Test += baseDirectory.value / "shared" / "generated" /  "test" / "scala"
   ).settings(
     libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.11.6" % "test"
   )
