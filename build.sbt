@@ -15,8 +15,8 @@ lazy val publishSettings = bintrayPublishSettings ++ Seq(
 
 lazy val generatorSettings = Seq(
   sourceGenerators in Compile <+= baseDirectory map { dir =>
-    val fileToWrite = dir / "shared" / "gen" / "scala" / "me/shadaj/genalgo" / "Resources.scala"
-    val folderToRead = dir / "shared" / "main" / "resources"
+    val fileToWrite = dir / ".." / "shared" / "gen" / "scala" / "me/shadaj/genalgo" / "Resources.scala"
+    val folderToRead = dir / ".." / "shared" / "main" / "resources"
     def sourceForDir(directory: File): String = {
       directory.listFiles().map { file =>
         if (file.isDirectory) {
@@ -40,8 +40,8 @@ lazy val generatorSettings = Seq(
   },
   cleanFiles <+= baseDirectory { base => base / "shared" / "gen" },
   sourceGenerators in Test <+= baseDirectory map { dir =>
-    val fileToWrite = dir / "shared" / "testGen" / "scala" / "me/shadaj/genalgo/tests" / "Resources.scala"
-    val folderToRead = dir / "shared" / "test" / "resources"
+    val fileToWrite = dir / ".." / "shared" / "testGen" / "scala" / "me/shadaj/genalgo/tests" / "Resources.scala"
+    val folderToRead = dir / ".." / "shared" / "test" / "resources"
     def sourceForDir(directory: File): String = {
       directory.listFiles().map { file =>
         if (file.isDirectory) {
@@ -97,12 +97,8 @@ lazy val js = project
   .settings(
     unmanagedSourceDirectories in Compile +=
       baseDirectory.value / "shared" / "main" / "scala",
-    unmanagedSourceDirectories in Compile +=
-      baseDirectory.value / "shared" / "gen" / "scala",
     unmanagedSourceDirectories in Test +=
-      baseDirectory.value / "shared" / "test" / "scala",
-    unmanagedSourceDirectories in Test +=
-      baseDirectory.value / "shared" / "testGen" / "scala"
+      baseDirectory.value / "shared" / "test" / "scala"
   )
 
 
@@ -111,12 +107,8 @@ lazy val jvm = project
   .settings(
     unmanagedSourceDirectories in Compile +=
       baseDirectory.value / "shared" / "main" / "scala",
-    unmanagedSourceDirectories in Compile +=
-      baseDirectory.value / "shared" / "gen" / "scala",
     unmanagedSourceDirectories in Test +=
-      baseDirectory.value / "shared" / "test" / "scala",
-    unmanagedSourceDirectories in Test +=
-      baseDirectory.value / "shared" / "testGen" / "scala"
+      baseDirectory.value / "shared" / "test" / "scala"
   ).settings(
     libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.11.6" % "test"
   )
