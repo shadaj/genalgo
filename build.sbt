@@ -38,7 +38,6 @@ lazy val generatorSettings = Seq(
     IO.write(fileToWrite, toWrite)
     Seq(fileToWrite)
   },
-  cleanFiles <+= baseDirectory { base => base / "shared" / "gen" },
   sourceGenerators in Test <+= baseDirectory map { dir =>
     val generated = dir / "shared" / "generated"
     val fileToWrite = generated / "test" / "scala" / "me/shadaj/genalgo/tests" / "TestResources.scala"
@@ -51,7 +50,7 @@ lazy val generatorSettings = Seq(
     IO.write(fileToWrite, toWrite)
     Seq(fileToWrite)
   },
-  cleanFiles <+= baseDirectory { base => base / "shared" / "testGen" }
+  cleanFiles <+= baseDirectory { base => base / "shared" / "generated" }
 )
 
 lazy val sharedSettings = Seq(

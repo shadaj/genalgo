@@ -5,3 +5,5 @@ utest.jsrunner.Plugin.utestJsSettings
 ScalaJSKeys.jsDependencies += scala.scalajs.sbtplugin.RuntimeDOM
 
 libraryDependencies += "org.scala-lang.modules.scalajs" %%% "scalajs-dom" % "0.6"
+
+libraryDependencies += "com.github.benhutchison" %%% "microjson" % "1.0"
