@@ -9,6 +9,8 @@ import scala.scalajs.sbtplugin.env.phantomjs.PhantomJSEnv
 
 import scala.io.Source
 
+import scoverage.ScoverageSbtPlugin.ScoverageKeys.coverage
+
 lazy val publishSettings = bintrayPublishSettings ++ Seq(
   licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 )
@@ -112,3 +114,12 @@ lazy val jvm = project
   ).settings(
     libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.11.6" % "test"
   )
+
+coverage := {
+  coverage.value
+  def fileToMkdir = {
+    val pathForRoot = (new File("")).toPath.toAbsolutePath.toString
+    s"$pathForRoot/jvm/target/scala-2.11/scoverage-report$pathForRoot/jvm"
+  }
+  (new File(fileToMkdir)).mkdirs
+}
