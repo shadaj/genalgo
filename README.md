@@ -3,6 +3,7 @@
 A bioinformatics library for Scala
 
 [![Build Status](https://travis-ci.org/shadaj/genalgo.svg?branch=master)](https://travis-ci.org/shadaj/genalgo)
+[![Coverage Status](https://img.shields.io/coveralls/shadaj/genalgo.svg)](https://coveralls.io/r/shadaj/genalgo?branch=master)
 
 ## For demo and documentation see <http://genalgo.shadaj.me>
 
