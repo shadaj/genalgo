@@ -1,6 +1,6 @@
 package me.shadaj.genalgo.util
 
-class BitStorage private(bitsPerGroup: Int, storage: Array[Int]) {
+class BitStorage private(bitsPerGroup: Int, storage: Array[Int]) extends Serializable {
   import BitStorage._
 
   def complement = {

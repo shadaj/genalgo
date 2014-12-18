@@ -5,7 +5,7 @@ import me.shadaj.genalgo.scoring.ScoringMatrix
 
 import scala.collection.{IndexedSeqLike, mutable}
 
-trait BioSequence[B <: BaseLike] extends IndexedSeq[B] {
+trait BioSequence[B <: BaseLike] extends IndexedSeq[B] with Serializable {
   type C <: BioSequence[B] with IndexedSeqLike[B, C]
 
   def self: C
