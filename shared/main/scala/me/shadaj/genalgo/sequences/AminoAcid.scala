@@ -1,7 +1,10 @@
 package me.shadaj.genalgo.sequences
 
 trait AminoAcid extends BaseLike {
-  lazy val name = getClass.getSimpleName
+  lazy val name = {
+    val simpleName = getClass.getSimpleName
+    if (simpleName.endsWith("$")) simpleName.init else simpleName // Drop the "$" at the end (on JVM)
+  }
 }
 
 trait Hydrophobic

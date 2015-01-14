@@ -18,9 +18,21 @@ class BitStorage private(bitsPerGroup: Int, storage: Array[Int]) extends Seriali
       withoutOverflow | (overflowed << (bitsPerGroup - overflow))
     }
   }
+
+  private def update(loc: Int, value: Int): Unit = {
+    val (storageIndex, indexInStorage, overflow) = calcIndices(loc, bitsPerGroup)
+    storage(storageIndex) |= (value << indexInStorage)
+    if (overflow > 0) {
+      storage(storageIndex + 1) |= (value >>> (bitsPerGroup - overflow))
+    }
+  }
   
   def apply[T](loc: Int, f: Int => T): T = {
     f(apply(loc))
+  }
+
+  def update[T](loc: Int, f: T => Int, value: T): Unit = {
+    update(loc, f(value))
   }
 }
 
