@@ -1,8 +1,8 @@
 package me.shadaj.genalgo.network
 
-import scala.concurrent.{ExecutionContext, Future}
-import scala.io.Source
+import scala.concurrent.ExecutionContext
+import dispatch._
 
 object Requester extends RequestMaker {
-  def get(url: String)(implicit context: ExecutionContext) = Future(Source.fromURL(url)).map(_.getLines.mkString("\n"))
+  def get(url: String)(implicit context: ExecutionContext) = Http(dispatch.url(url) OK as.String)
 }
