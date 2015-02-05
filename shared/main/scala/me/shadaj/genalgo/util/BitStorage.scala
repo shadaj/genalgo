@@ -63,4 +63,9 @@ object BitStorage {
   def apply[T](bitsPerGroup: Int, data: Array[T], f: T => Int): BitStorage = {
     BitStorage(bitsPerGroup, data.map(f))
   }
+
+  def allocate[T](bitsPerGroup: Int, size: Int, f: T => Int): BitStorage = {
+    val storage = new Array[Int](math.ceil((size * bitsPerGroup)/BitsPerInt.toFloat).toInt)
+    new BitStorage(bitsPerGroup, storage)
+  }
 }
