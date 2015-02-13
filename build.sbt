@@ -1,119 +1,95 @@
 import sbt.Keys._
 import sbt._
-import bintray.Opts
 import bintray.Plugin.bintraySettings
-import bintray.Keys._
-import scala.scalajs.sbtplugin.ScalaJSPlugin.ScalaJSKeys._
-import scala.scalajs.sbtplugin.ScalaJSPlugin._
-import scala.scalajs.sbtplugin.env.phantomjs.PhantomJSEnv
 
 import scala.io.Source
 
 import scoverage.ScoverageSbtPlugin.ScoverageKeys.coverage
 
-lazy val publishSettings = bintrayPublishSettings ++ Seq(
-  licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
-)
+name := "genalgo-root"
 
-lazy val generatorSettings = Seq(
-  sourceGenerators in Compile <+= baseDirectory map { dir =>
-    val fileToWrite = dir / ".." / "shared" / "gen" / "scala" / "me/shadaj/genalgo" / "Resources.scala"
-    val folderToRead = dir / ".." / "shared" / "main" / "resources"
-    def sourceForDir(directory: File): String = {
-      directory.listFiles().map { file =>
-        if (file.isDirectory) {
-          s"""object ${file.name} {
-             |${sourceForDir(file)}
-             |}""".stripMargin
-        } else {
-          val fileLines = Source.fromFile(file).getLines().toList
-          val stringList = fileLines.map(s => '"' + s + '"').toString
-          s"""val ${file.name.split('.').head} = $stringList"""
-        }
-      }.mkString("\n")
-    }
-    val toWrite =
-      s"""package me.shadaj.genalgo
-         |object Resources {
-         |${sourceForDir(folderToRead)}
-         |}""".stripMargin
-    IO.write(fileToWrite, toWrite)
-    Seq(fileToWrite)
-  },
-  cleanFiles <+= baseDirectory { base => base / "shared" / "gen" },
-  sourceGenerators in Test <+= baseDirectory map { dir =>
-    val fileToWrite = dir / ".." / "shared" / "testGen" / "scala" / "me/shadaj/genalgo/tests" / "Resources.scala"
-    val folderToRead = dir / ".." / "shared" / "test" / "resources"
-    def sourceForDir(directory: File): String = {
-      directory.listFiles().map { file =>
-        if (file.isDirectory) {
-          s"""object ${file.name} {
-             |${sourceForDir(file)}
-             |}""".stripMargin
-        } else {
-          val fileLines = Source.fromFile(file).getLines().toList
-          val stringList = fileLines.map(s => '"' + s + '"').toString
-          s"""val ${file.name.split('.').head} = $stringList"""
-        }
-      }.mkString("\n")
-    }
-    val toWrite =
-      s"""package me.shadaj.genalgo.tests
-         |object Resources {
-         |${sourceForDir(folderToRead)}
-         |}""".stripMargin
-    IO.write(fileToWrite, toWrite)
-    Seq(fileToWrite)
-  },
-  cleanFiles <+= baseDirectory { base => base / "shared" / "testGen" }
-)
-
-lazy val sharedSettings = Seq(
-  organization := "me.shadaj",
-  name := "genalgo",
-  scalaVersion := "2.11.2",
-  version := "0.1.4-SNAPSHOT"
-)
-
-lazy val genalgoJsSettings =  bintraySettings ++
-                              sharedSettings ++
-                              generatorSettings ++
-                              scalaJSSettings ++
-                              publishSettings
-
-lazy val genalgoJvmSettings = bintraySettings ++
-                              sharedSettings ++
-                              generatorSettings ++
-                              publishSettings
-
-lazy val root = project.in(file(".")).aggregate(js, jvm).settings(
-  publish := {},
-  publishLocal := {}
-)
-
-lazy val js = project
-  .settings(genalgoJsSettings:_*)
-  .settings(
-    ScalaJSKeys.preLinkJSEnv := new PhantomJSEnv,
-    ScalaJSKeys.postLinkJSEnv := new PhantomJSEnv)
-  .settings(
-    unmanagedSourceDirectories in Compile +=
-      baseDirectory.value / "shared" / "main" / "scala",
-    unmanagedSourceDirectories in Test +=
-      baseDirectory.value / "shared" / "test" / "scala"
+lazy val root = project.in(file(".")).
+  aggregate(genalgoJS, genalgoJVM).
+  settings(
+    publish := {},
+    publishLocal := {}
   )
 
-
-lazy val jvm = project
-  .settings(genalgoJvmSettings:_*)
-  .settings(
-    unmanagedSourceDirectories in Compile +=
-      baseDirectory.value / "shared" / "main" / "scala",
-    unmanagedSourceDirectories in Test +=
-      baseDirectory.value / "shared" / "test" / "scala"
-  ).settings(
-    libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.11.6" % "test"
+lazy val genalgo = crossProject.in(file(".")).
+  settings(
+    organization := "me.shadaj",
+    name := "genalgo",
+    scalaVersion := "2.11.2",
+    version := "0.1.4-SNAPSHOT",
+    licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
+    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.3.0",
+    testFrameworks += new TestFramework("utest.runner.Framework"),
+    sourceGenerators in Compile <+= baseDirectory map { dir =>
+      val fileToWrite = dir / ".." / "shared" / "src" / "gen" / "scala" / "me/shadaj/genalgo" / "Resources.scala"
+      val folderToRead = dir / ".." / "shared" / "src" / "main" / "resources"
+      def sourceForDir(directory: File): String = {
+        directory.listFiles().map { file =>
+          if (file.isDirectory) {
+            s"""object ${file.name} {
+               |${sourceForDir(file)}
+               |}""".stripMargin
+          } else {
+            val fileLines = Source.fromFile(file).getLines().toList
+            val stringList = fileLines.map(s => '"' + s + '"').toString
+            s"""val ${file.name.split('.').head} = $stringList"""
+          }
+        }.mkString("\n")
+      }
+      val toWrite =
+        s"""package me.shadaj.genalgo
+           |object Resources {
+           |${sourceForDir(folderToRead)}
+           |}""".stripMargin
+      IO.write(fileToWrite, toWrite)
+      Seq(fileToWrite)
+    },
+    cleanFiles <+= baseDirectory { base => base / ".." / "shared" / "src" / "gen" },
+    sourceGenerators in Test <+= baseDirectory map { dir =>
+      val fileToWrite = dir / ".." / "shared" / "src" / "testGen" / "scala" / "me/shadaj/genalgo/tests" / "Resources.scala"
+      val folderToRead = dir / ".." / "shared" / "src" / "test" / "resources"
+      def sourceForDir(directory: File): String = {
+        directory.listFiles().map { file =>
+          if (file.isDirectory) {
+            s"""object ${file.name} {
+               |${sourceForDir(file)}
+               |}""".stripMargin
+          } else {
+            val fileLines = Source.fromFile(file).getLines().toList
+            val stringList = fileLines.map(s => '"' + s + '"').toString
+            s"""val ${file.name.split('.').head} = $stringList"""
+          }
+        }.mkString("\n")
+      }
+      val toWrite =
+        s"""package me.shadaj.genalgo.tests
+           |object Resources {
+           |${sourceForDir(folderToRead)}
+           |}""".stripMargin
+      IO.write(fileToWrite, toWrite)
+      Seq(fileToWrite)
+    },
+    cleanFiles <+= baseDirectory { base => base / ".." / "shared" / "src" / "testGen" }
+  ).
+  settings(bintraySettings ++ bintrayPublishSettings : _*).
+  jvmSettings(
+    libraryDependencies += "net.databinder.dispatch" %% "dispatch-core" % "0.11.2",
+    libraryDependencies += "org.slf4j" % "slf4j-nop" % "1.7.10" % Test,
+    libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.11.6" % Test
+  ).
+  jsSettings(
+    jsDependencies += RuntimeDOM,
+    preLinkJSEnv := PhantomJSEnv().value,
+    postLinkJSEnv := PhantomJSEnv().value,
+    libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.0"
   )
+
+lazy val genalgoJVM = genalgo.jvm
+lazy val genalgoJS = genalgo.js
 
 coverage := {
   coverage.value

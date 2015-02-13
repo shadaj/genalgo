@@ -1,6 +1,6 @@
 package me.shadaj.genalgo.network
 
-import org.scalajs.dom.extensions.Ajax
+import org.scalajs.dom.ext.Ajax
 
 import scala.concurrent.ExecutionContext
 
