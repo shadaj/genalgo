@@ -4,6 +4,8 @@ target
 .settings
 .idea
 .idea_modules
+**/*.iml
 *.png
-shared/gen
-shared/testGen
+shared/src/gen
+shared/src/testGen
+**/.DS_Store

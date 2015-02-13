@@ -19,7 +19,7 @@ lazy val genalgo = crossProject.in(file(".")).
   settings(
     organization := "me.shadaj",
     name := "genalgo",
-    scalaVersion := "2.11.2",
+    scalaVersion := "2.11.5",
     version := "0.1.4-SNAPSHOT",
     licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
     libraryDependencies += "com.lihaoyi" %%% "utest" % "0.3.0",
