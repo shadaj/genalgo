@@ -1,5 +1,5 @@
 language: scala
 scala:
    - 2.11.2
-script: "sbt js/test coverage jvm/test"
-after_success: "sbt jvm/coveralls"
+script: "sbt genalgoJS/test coverage genalgoJVM/test"
+after_success: "sbt genalgoJVM/coveralls"
