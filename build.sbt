@@ -22,7 +22,7 @@ lazy val genalgo = crossProject.in(file(".")).
     scalaVersion := "2.11.5",
     version := "0.1.4-SNAPSHOT",
     licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
-    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.3.0",
+    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.3.0" % Test,
     testFrameworks += new TestFramework("utest.runner.Framework"),
     sourceGenerators in Compile <+= baseDirectory map { dir =>
       val fileToWrite = dir / ".." / "shared" / "src" / "gen" / "scala" / "me/shadaj/genalgo" / "Resources.scala"
@@ -83,6 +83,7 @@ lazy val genalgo = crossProject.in(file(".")).
   ).
   jsSettings(
     jsDependencies += RuntimeDOM,
+    jsDependencies += ProvidedJS / "bio-pv.min.js" % Test,
     preLinkJSEnv := PhantomJSEnv().value,
     postLinkJSEnv := PhantomJSEnv().value,
     libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.0"
@@ -94,8 +95,8 @@ lazy val genalgoJS = genalgo.js
 coverage := {
   coverage.value
   def fileToMkdir = {
-    val pathForRoot = (new File("")).toPath.toAbsolutePath.toString
+    val pathForRoot = new File("").toPath.toAbsolutePath.toString
     s"$pathForRoot/jvm/target/scala-2.11/scoverage-report$pathForRoot/jvm"
   }
-  (new File(fileToMkdir)).mkdirs
+  new File(fileToMkdir).mkdirs
 }
