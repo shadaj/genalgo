@@ -10,7 +10,7 @@ import scala.collection.IndexedSeqLike
 
 object LocalAlignment extends AlignmentStrategy {
   def align[B <: BaseLike, C <: BioSequence[B] with IndexedSeqLike[B, C]](seq1: C, seq2: C, scorer: ScoringMatrix[B]): Alignment[B, C] = {
-    val lengths = Array.fill(seq1.length + 1, seq2.length + 1)(0)
+    val lengths = Array.ofDim[Int](seq1.length + 1, seq2.length + 1)
 
     for (i <- 0 to seq1.length) {
       lengths(i)(0) = 0
