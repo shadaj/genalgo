@@ -108,8 +108,3 @@ siteMappings ++= Seq(
 )
 
 includeFilter in JekyllSupport.Jekyll ~= { _ || "*.svg" }
-
-makeSite := {
-  (fullOptJS in Compile in demos).value
-  makeSite.value
-}

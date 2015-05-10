@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e # exit with nonzero exit code if anything fails
 
-sbt makeSite
+sbt demos/fullOptJS makeSite
 
 # go to the out directory and create a *new* Git repo
 cd target/site
