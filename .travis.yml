@@ -8,4 +8,4 @@ script:
   - sbt genalgoJS/test coverage genalgoJVM/test
 after_success:
   - sbt genalgoJVM/coveralls
-  - bash ./deploy.sh
+  - 'if [[ $TRAVIS_PULL_REQUEST == "false" ]]; then bash ./deploy.sh; fi'
