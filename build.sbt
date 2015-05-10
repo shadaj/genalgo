@@ -99,7 +99,7 @@ site.settings
 
 ghpages.settings
 
-git.remoteRepo := s"https://${sys.env.getOrElse("GH_TOKEN", "")}@github.com/shadaj/genalgo.git}"
+git.remoteRepo := s"https://${sys.env.getOrElse("GH_TOKEN", "")}@github.com/shadaj/genalgo.git"
 
 site.addMappingsToSiteDir(mappings in packageDoc in Compile in genalgoJS, "js/latest/api")
 site.addMappingsToSiteDir(mappings in packageDoc in Compile in genalgoJVM, "jvm/latest/api")

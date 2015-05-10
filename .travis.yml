@@ -8,4 +8,4 @@ script:
   - sbt genalgoJS/test coverage genalgoJVM/test
 after_success:
   - sbt genalgoJVM/coveralls
-  - sbt ghpagesPushSite
+  - sbt ghpagesPushSite > /dev/null 2>&1
