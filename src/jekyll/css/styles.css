@@ -1,0 +1,24 @@
+p {
+  font-size: 18px;
+  margin-bottom: 18px;
+  /*font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;*/
+}
+
+.highlight pre {
+  background-color: inherit;
+  border: inherit;
+  font-size: 20px;
+}
+
+.highlight pre code * {
+  white-space: nowrap;
+}
+
+.highlight pre {
+  overflow-x: auto;
+  word-wrap: normal;
+}
+
+.highlight pre code {
+  white-space: pre;
+}

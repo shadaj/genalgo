@@ -1,5 +1,11 @@
 language: scala
+install:
+  sudo pip install pygments
+  gem install jekyll
 scala:
-   - 2.11.5
-script: "sbt genalgoJS/test coverage genalgoJVM/test"
-after_success: "sbt genalgoJVM/coveralls"
+   - 2.11.6
+script:
+  - sbt genalgoJS/test coverage genalgoJVM/test
+after_success:
+  - sbt genalgoJVM/coveralls
+  - sbt ghpagesPushSite
