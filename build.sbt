@@ -97,10 +97,6 @@ coverage := {
 
 site.settings
 
-ghpages.settings
-
-git.remoteRepo := s"https://${sys.env.getOrElse("GH_TOKEN", "")}@github.com/shadaj/genalgo.git"
-
 site.addMappingsToSiteDir(mappings in packageDoc in Compile in genalgoJS, "js/latest/api")
 site.addMappingsToSiteDir(mappings in packageDoc in Compile in genalgoJVM, "jvm/latest/api")
 
@@ -116,10 +112,4 @@ includeFilter in JekyllSupport.Jekyll ~= { _ || "*.svg" }
 makeSite := {
   (fullOptJS in Compile in demos).value
   makeSite.value
-}
-
-GhPagesKeys.pushSite := {
-  if (sys.env.getOrElse("TRAVIS_PULL_REQUEST", "") == "false") {
-    GhPagesKeys.pushSite.value
-  }
 }
