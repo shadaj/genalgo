@@ -1,24 +1,43 @@
 p {
   font-size: 18px;
   margin-bottom: 18px;
-  /*font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;*/
 }
 
 .highlight pre {
   background-color: inherit;
   border: inherit;
   font-size: 20px;
+
+  overflow-x: auto;
+  word-wrap: normal;
+
+  padding: 10px;
 }
 
 .highlight pre code * {
   white-space: nowrap;
 }
 
-.highlight pre {
-  overflow-x: auto;
-  word-wrap: normal;
-}
 
 .highlight pre code {
   white-space: pre;
+  font-family: "Roboto Mono";
+}
+
+.mdl-layout-title {
+	max-width: 56px;
+}
+
+.mdl-layout__content {
+  padding: 75px;
+}
+
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-center {
+  text-align: center;
 }
