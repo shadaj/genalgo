@@ -3,6 +3,12 @@ set -e # exit with nonzero exit code if anything fails
 
 sbt demos/fullOptJS makeSite
 
+# install ssh keys
+openssl aes-256-cbc -K $encrypted_a3290f16c23b_key -iv $encrypted_a3290f16c23b_iv -in .travisdeploykey.enc -out .travisdeploykey -d
+chmod go-rwx .travisdeploykey
+eval `ssh-agent -s`
+ssh-add .travisdeploykey
+
 # go to the out directory and create a *new* Git repo
 cd target/site
 git init
@@ -20,4 +26,4 @@ git commit -m "Deploy to GitHub Pages"
 # repo's gh-pages branch. (All previous history on the gh-pages branch
 # will be lost, since we are overwriting it.) We redirect any output to
 # /dev/null to hide any sensitive credential data that might otherwise be exposed.
-git push --force --quiet "https://${GH_TOKEN}@github.com/shadaj/genalgo.git" master:gh-pages > /dev/null 2>&1
+git push --force --quiet "git@github.com:shadaj/genalgo.git" gh-pages:gh-pages > /dev/null 2>&1
