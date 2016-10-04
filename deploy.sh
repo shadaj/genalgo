@@ -13,6 +13,8 @@ ssh-add .travisdeploykey
 cd target/site
 git init
 
+git checkout --orphan gh-pages
+
 # inside this git repo we'll pretend to be a new user
 git config user.name "Travis CI"
 git config user.email "shadaj@users.noreply.github.com"
