@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html style="overflow: auto; height: auto;">
+  <head>
+    <title>genalgo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="shortcut icon" href="http://shadaj.me/img/favicon.ico">
+    <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+		<link href="http://shadaj.me/css/main.css" rel="stylesheet">
+
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/css/syntax.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+		  <header class="mdl-layout__header mdl-layout__header--waterfall" style="background-color: #0B4F6C">
+		    <div class="mdl-layout__header-row">
+		      <a href="http://shadaj.me"><span class="mdl-layout-title"><img class="nav-profile" src="http://shadaj.me/img/profile.jpg"></span></a>
+          <div class="slash-divider"></div>
+          <a class="mdl-layout-title" href="/">genalgo</a>
+
+					<a class="mdl-navigation__link" href="/jvm/latest/api">JVM API</a>
+					<a class="mdl-navigation__link" href="/js/latest/api">JS API</a>
+
+		      <div class="mdl-layout-spacer"></div>
+
+		      <nav class="mdl-navigation">
+						<a class="mdl-button mdl-js-button mdl-js-ripple-effect" style="width: 33%; background: #2979FF; color: white" href="https://github.com/shadaj/genalgo" target="_blank">
+				      GitHub
+				    </a>
+		      </nav>
+		    </div>
+		  </header>
+		  <main class="mdl-layout__content">
+				<p><img class="center-block" style="max-height: 75vh; max-width: 50vw" src="/assets/genalgoLogo.svg" /></p>
+<h2 class="text-center">A bioinformatics library for Scala (and Scala.js)</h2>
+
+<h2 id="features">Features</h2>
+<hr />
+
+<h3 id="creating-sequences">Creating Sequences</h3>
+<p>genalgo provides implementations for DNA, RNA, and Protein</p>
+
+<p>Any genalgo sequence is an IndexedSeq thus you can use all standard collections methods such as map, filter, etc.</p>
+
+<h5 id="from-a-string">From a string</h5>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">val</span> <span class="n">myDNA</span> <span class="k">=</span> <span class="nc">DNA</span><span class="o">(</span><span class="s">"AT"</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">myRNA</span> <span class="k">=</span> <span class="nc">RNA</span><span class="o">(</span><span class="s">"AU"</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">myProtein</span> <span class="k">=</span> <span class="nc">Protein</span><span class="o">(</span><span class="s">"ME"</span><span class="o">)</span>
+</code></pre>
+</div>
+
+<h5 id="from-bases">From bases</h5>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">val</span> <span class="n">myDNA</span> <span class="k">=</span> <span class="nc">DNA</span><span class="o">(</span><span class="n">A</span><span class="o">,</span> <span class="n">T</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">myRNA</span> <span class="k">=</span> <span class="nc">RNA</span><span class="o">(</span><span class="n">A</span><span class="o">,</span> <span class="n">U</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">myProtein</span> <span class="k">=</span> <span class="nc">Protein</span><span class="o">(</span><span class="nc">Met</span><span class="o">,</span> <span class="nc">Glu</span><span class="o">)</span>
+</code></pre>
+</div>
+
+<h5 id="from-bases-in-an-indexedseq">From bases (in an IndexedSeq)</h5>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">val</span> <span class="n">myDNA</span> <span class="k">=</span> <span class="nc">DNA</span><span class="o">(</span><span class="nc">IndexedSeq</span><span class="o">(</span><span class="n">A</span><span class="o">,</span> <span class="n">T</span><span class="o">))</span>
+<span class="k">val</span> <span class="n">myRNA</span> <span class="k">=</span> <span class="nc">RNA</span><span class="o">(</span><span class="nc">IndexedSeq</span><span class="o">(</span><span class="n">A</span><span class="o">,</span> <span class="n">U</span><span class="o">))</span>
+<span class="k">val</span> <span class="n">myProtein</span> <span class="k">=</span> <span class="nc">Protein</span><span class="o">(</span><span class="nc">IndexedSeq</span><span class="o">(</span><span class="nc">Met</span><span class="o">,</span> <span class="nc">Glu</span><span class="o">))</span>
+</code></pre>
+</div>
+
+<h3 id="transformations">Transformations</h3>
+
+<h5 id="complement">Complement</h5>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="n">myDNA</span><span class="o">.</span><span class="n">complement</span>
+<span class="n">myRNA</span><span class="o">.</span><span class="n">complement</span>
+</code></pre>
+</div>
+
+<h3 id="conversions">Conversions</h3>
+
+<h5 id="dna-to-rna-and-vice-versa">DNA to RNA (and vice-versa)</h5>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="n">myDNA</span><span class="o">.</span><span class="n">toRNA</span>
+<span class="n">myRNA</span><span class="o">.</span><span class="n">toDNA</span>
+</code></pre>
+</div>
+
+<h5 id="rna-to-protein">RNA to Protein</h5>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="n">myRNA</span><span class="o">.</span><span class="n">toProtein</span>
+</code></pre>
+</div>
+
+<h3 id="alignment">Alignment</h3>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="nc">Protein</span><span class="o">(</span><span class="s">"PLEASANTLY"</span><span class="o">).</span><span class="n">align</span><span class="o">(</span><span class="nc">Protein</span><span class="o">(</span><span class="s">"MEANLY"</span><span class="o">),</span> <span class="k">new</span> <span class="nc">BLOSUM62</span><span class="o">(</span><span class="mi">5</span><span class="o">))</span>
+</code></pre>
+</div>
+
+<h3 id="uniprot">UniProt</h3>
+<p>Retrieving data from UniProt returns a Future[FASTA] on which you can set callbacks and apply transformations</p>
+
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="nc">Uniprot</span><span class="o">.</span><span class="n">getFasta</span><span class="o">(</span><span class="s">"Q9D103"</span><span class="o">)</span>
+</code></pre>
+</div>
+
+<h3 id="example-aligning-the-ifm1-protein-from-mice-and-humans-and-generating-an-image-from-the-alignment">Example: Aligning the IFM1 protein from mice and humans and generating an image from the alignment</h3>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="nc">Uniprot</span><span class="o">.</span><span class="n">getFasta</span><span class="o">(</span><span class="s">"Q9D103"</span><span class="o">).</span><span class="n">zip</span><span class="o">(</span><span class="nc">Uniprot</span><span class="o">.</span><span class="n">getFasta</span><span class="o">(</span><span class="s">"P13164"</span><span class="o">)).</span><span class="n">map</span> <span class="o">{</span> <span class="k">case</span> <span class="o">(</span><span class="n">mouse</span><span class="o">,</span> <span class="n">human</span><span class="o">)</span> <span class="k">=&gt;</span>
+  <span class="k">val</span> <span class="n">alignment</span> <span class="k">=</span> <span class="n">mouse</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">align</span><span class="o">(</span><span class="n">human</span><span class="o">.</span><span class="n">sequence</span><span class="o">,</span> <span class="k">new</span> <span class="nc">BLOSUM62</span><span class="o">(</span><span class="mi">5</span><span class="o">))</span>
+  <span class="n">println</span><span class="o">(</span><span class="n">alignment</span><span class="o">)</span>
+  <span class="n">alignment</span><span class="o">.</span><span class="n">toImageFile</span><span class="o">(</span><span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="s">"obscurin.png"</span><span class="o">))</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h2 id="demos">Demos</h2>
+<hr />
+
+<h3 id="align-sequences-from-uniprot-prefill-values">Align sequences from <a href="http://uniprot.org">UniProt</a> (<a id="prefillButton">prefill values</a>)</h3>
+<div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--4-col">
+    <div class="mdl-textfield mdl-js-textfield">
+      <input class="mdl-textfield__input" type="text" id="uniprot1" />
+      <label class="mdl-textfield__label" for="uniprot1">Uniprot ID 1</label>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield">
+      <input class="mdl-textfield__input" type="text" id="uniprot2" />
+      <label class="mdl-textfield__label" for="uniprot2">Uniprot ID 2</label>
+    </div>
+    <button id="align-btn" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+      Align!
+    </button>
+  </div>
+  <div class="mdl-cell mdl-cell--8-col">
+    <textarea class="uniprot-out" readonly="" wrap="off" rows="5" id="output">Results will show up here</textarea>
+  </div>
+<div>
+
+</div></div>
+
+		  </main>
+		</div>
+
+    <script src="https://storage.googleapis.com/code.getmdl.io/1.3.0/material.min.js"></script>
+    <script type="text/javascript" src="/demos-opt.js"></script>
+    <script type="text/javascript" src="/demos-launcher.js"></script>
+  </body>
+</html>
