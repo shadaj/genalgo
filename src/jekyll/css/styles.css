@@ -3,8 +3,7 @@ p {
   margin-bottom: 18px;
 }
 
-.highlight pre {
-  background-color: inherit;
+pre.highlight {
   border: inherit;
   font-size: 20px;
 
@@ -14,18 +13,13 @@ p {
   padding: 10px;
 }
 
-.highlight pre code * {
+pre.highlight pre code * {
   white-space: nowrap;
 }
 
-
-.highlight pre code {
+pre.highlight code {
   white-space: pre;
   font-family: "Roboto Mono";
-}
-
-.mdl-layout-title {
-	max-width: 56px;
 }
 
 .mdl-layout__content {
@@ -40,4 +34,10 @@ p {
 
 .text-center {
   text-align: center;
+}
+
+.uniprot-out {
+  font-family: "Roboto Mono";
+  font-size: 20px;
+  width: 100%;
 }

@@ -3,7 +3,7 @@ layout: default
 ---
 
 <img class="center-block" style="max-height: 75vh; max-width: 50vw" src="/assets/genalgoLogo.svg">
-<p style="font-size: 300%" class="lead text-center">A bioinformatics library for Scala (and Scala.js)</p>
+<h2 class="text-center">A bioinformatics library for Scala (and Scala.js)</h2>
 
 ## Features
 <hr/>
@@ -78,14 +78,5 @@ Uniprot.getFasta("Q9D103").zip(Uniprot.getFasta("P13164")).map { case (mouse, hu
 
 ## Demos
 <hr/>
-### Align sequences from [UniProt]("http://uniprot.org") (<a id="prefillButton">prefill values</a>)
-<div class="well col-lg-4">
-  <fieldset>
-    <input id="uniprot1" type="text" class="form-control" placeholder="Uniprot ID 1"></input>
-    <input id="uniprot2" type="text" class="form-control" placeholder="Uniprot ID 2"></input>
-    <button id="align-btn" style="margin-top: 20px" class="btn btn-lg btn-primary">Align!</button>
-  </fieldset>
-</div>
-<div class="col-lg-8">
-  <textarea readonly wrap="off" rows="5" style="font-family: monospace; width: 100%" id="output">Results will show up here</textarea>
-</div>
+### Align sequences from [UniProt](http://uniprot.org) (<a id="prefillButton">prefill values</a>)
+{% include demo.html %}
