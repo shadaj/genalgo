@@ -3,7 +3,7 @@ package me.shadaj.genalgo.tests
 import utest._
 
 import me.shadaj.genalgo.uniprot.Uniprot
-import utest.ExecutionContext.RunNow
+import utest.framework.ExecutionContext.RunNow
 
 object UniprotTest extends TestSuite {
   val tests = TestSuite {
