@@ -1,13 +1,26 @@
 language: scala
+
+jdk:
+  - oraclejdk8
+
 install:
   - sudo pip install pygments
   - gem install jekyll
   - gem install redcarpet
   - gem install pygments.rb
+  - . $HOME/.nvm/nvm.sh
+  - nvm install stable
+  - nvm use stable
+  - npm install
+  - npm install jsdom
+
 scala:
-   - 2.11.6
+   - 2.12.1
+   - 2.11.8
+
 script:
   - sbt genalgoJS/test coverage genalgoJVM/test
+
 after_success:
   - sbt genalgoJVM/coveralls
   - 'if [[ $TRAVIS_PULL_REQUEST == "false" ]]; then bash ./deploy.sh; fi'
